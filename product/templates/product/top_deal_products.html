@@ -9,7 +9,7 @@
 {% endif %}
 
 <div id="top__dealProductMainDiv" class="flex flex-wrap gap-5 home__product">
-    {% if top_deal_products and top_deal_ending is not None %}
+    {% if top_deal_products %}
         {% for product in top_deal_products %}
             <div class="w-[200px] flex flex-col items-center gap-y-3">
                 <div class="relative h-[300px] w-full overflow-hidden bg-slate-600 home__productImageContent">
@@ -50,11 +50,11 @@
                                     ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
                                 {% endwith %}
                             </p>
-                            <p class="text-slate-500 line-through">{{ product.price }}</p>
+                            <p class="text-slate-500 line-through">${{ product.price|floatformat:2 }}</p>
                         </div>
                     {% else %}
                         <p class="text-base font-medium text-indigo-500">
-                            ${{ product.price }}
+                            ${{ product.price|floatformat:2 }}
                         </p>
                     {% endif %}
                 </div>

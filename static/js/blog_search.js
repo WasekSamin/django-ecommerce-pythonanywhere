@@ -7,6 +7,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const blogSearchField = document.getElementById("search__blogInput");
     const blogSearchChildDiv = document.getElementById("blog__searchChildDiv");
 
+    blogSearchInput.classList.remove("invisible");
+
     // Open blog search modal
     blogSearchInput.addEventListener("focus", () => {
         blogSearchModal.classList.add("show__blogSearchMainDiv");

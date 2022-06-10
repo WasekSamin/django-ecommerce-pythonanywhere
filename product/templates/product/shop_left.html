@@ -1,4 +1,5 @@
 {% load static %}
+{% load mathfilters %}
 
 <link rel="stylesheet" href="{% static 'css/shop_left.css' %}">
 
@@ -79,74 +80,40 @@
             </div>
         {% endif %}
 
-        <!-- Best selling products -->
+        {% comment %}Show 5 newest products{% endcomment %}
         <div class="flex flex-col gap-y-3 shop__productBestSelling">
-            <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Best selling products</h5>
-            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
-                <div class="flex items-center gap-x-3">
-                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
-                        <img src="{% static 'demo_images/product-1.jpg' %}" class="w-full h-[70px] object-cover" alt="">
-                    </a>
-                    <div class="flex flex-col gap-y-1">
-                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
-                            <p class="font-semibold">Product title</p>
-                        </a>
-                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
+            <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Newest products</h5>
+            {% if newest_products %}
+                {% for product in newest_products %}
+                    <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
+                        <div class="flex items-center gap-x-3">
+                            {% if product.image %}
+                                <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
+                                    <img src="{{ product.image.url }}" class="w-full h-[70px] object-cover" alt="">
+                                </a>
+                            {% endif %}
+                            <div class="flex flex-col gap-y-1">
+                                <a href="{% url 'product:product-detail' product.slug %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                                    <p class="font-semibold">{{ product.title }}</p>
+                                </a>
+                                
+                                {% if product.discount_percentage > 0 %}
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <p class="text-indigo-500 text-base">
+                                            {% with price=product.price discount=product.discount_percentage %}
+                                                ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
+                                            {% endwith %}
+                                        </p>
+                                        <p class="text-slate-500 line-through">${{ product.price|floatformat:2 }}</p>
+                                    </div>
+                                {% else %}
+                                    <p class="text-indigo-500 text-base">${{ product.price|floatformat:2 }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
-                <div class="flex items-center gap-x-3">
-                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
-                        <img src="{% static 'demo_images/product-2.jpg' %}" class="w-full h-[70px] object-cover" alt="">
-                    </a>
-                    <div class="flex flex-col gap-y-1">
-                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
-                            <p class="font-semibold">Product title</p>
-                        </a>
-                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
-                <div class="flex items-center gap-x-3">
-                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
-                        <img src="{% static 'demo_images/product-9.jpg' %}" class="w-full h-[70px] object-cover" alt="">
-                    </a>
-                    <div class="flex flex-col gap-y-1">
-                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
-                            <p class="font-semibold">Product title</p>
-                        </a>
-                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
-                <div class="flex items-center gap-x-3">
-                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
-                        <img src="{% static 'demo_images/product-8.jpg' %}" class="w-full h-[70px] object-cover" alt="">
-                    </a>
-                    <div class="flex flex-col gap-y-1">
-                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
-                            <p class="font-semibold">Product title</p>
-                        </a>
-                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
-                <div class="flex items-center gap-x-3">
-                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
-                        <img src="{% static 'demo_images/product-7.jpg' %}" class="w-full h-[70px] object-cover" alt="">
-                    </a>
-                    <div class="flex flex-col gap-y-1">
-                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
-                            <p class="font-semibold">Product title</p>
-                        </a>
-                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
-                    </div>
-                </div>
-            </div>
+                {% endfor %}
+            {% endif %}
         </div>
 
         {% comment %}Product categories{% endcomment %}

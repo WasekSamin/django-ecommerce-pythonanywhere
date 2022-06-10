@@ -1,0 +1,112 @@
+{% load mathfilters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .header__title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .username {
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .invoice__table {
+            border-collapse: collapse;
+        }
+
+        .invoice__table td,
+        .invoice__table th {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .invoice__table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: rgb(99 102 241);
+            color: white;
+        }
+
+        .invoice__totalPriceHeadLine {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: rgb(99 102 241);
+        }
+
+        .invoice__totalPrice {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: rgb(99 102 241);
+            text-align: center;
+        }
+
+        .invoice__tableData td {
+            min-width: 15rem;
+            width: 15rem;
+            max-width: 15rem;
+        }
+
+        .invoice__productPrice {
+            color: rgb(99 102 241);
+        }
+
+        .invoice__productSubtotal {
+            font-weight: 600;
+            color: rgb(99 102 241);
+        }
+    </style>
+
+    <h1 class="header__title">Welcome To Django Ecommerce Site</h1>
+    <h3 class="username">Hello {{ username }}</h3>
+    <h5 style="font-size: 1.2rem">Your invoice/order ID is {{ order_obj.uid }}</h5>
+    <div style="overflow-x: auto;">
+        <table class="invoice__table">
+            <thead>
+                <tr>
+                    <th style="font-weight: bold; font-size: 1.5rem;">Product</th>
+                    <th style="font-weight: bold; font-size: 1.5rem;">Price</th>
+                    <th style="font-weight: bold; font-size: 1.5rem;">Qty</th>
+                    <th style="font-weight: bold; font-size: 1.5rem;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_obj.cart.cart_items.all %}
+                    <tr class="invoice__tableData">
+                        <td>{{ item.product.title }}</td>
+                        <td class="invoice__productPrice">
+                            {% if item.product.discount_percentage > 0 %}
+                                {% with price=item.product.price discount=item.product.discount_percentage %}
+                                    ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
+                                {% endwith %}
+                            {% else %}
+                                ${{ item.product.price|floatformat:2 }}
+                            {% endif %}
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                        <td class="invoice__productSubtotal">${{ item.price|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="invoice__totalPriceHeadLine" colspan="2">Total</td>
+                    <td class="invoice__totalPrice" colspan="2">${{ order_obj.total_price }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <p style="font-weight: 600;">Currently your order is in {{ order_obj.order_status }} state.</p>
+    <p>Your package will be arrived soon. Thank you for shopping from us! Have a good day.</p>
+</body>
+</html>

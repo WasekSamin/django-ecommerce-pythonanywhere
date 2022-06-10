@@ -39,6 +39,7 @@ window.addEventListener("DOMContentLoaded", () => {
             left: 0,
             behavior: "smooth"
         });
+        checkoutButtonNormalState();
     }
 
     if (country !== null) {
@@ -47,10 +48,24 @@ window.addEventListener("DOMContentLoaded", () => {
         })
     }
 
+    function checkoutButtonNormalState() {
+        checkoutConfirmOrderBtn.disabled = false;
+        checkoutConfirmOrderBtn.classList.add("bg-indigo-500");
+        checkoutConfirmOrderBtn.classList.add("hover:bg-indigo-700");
+        checkoutConfirmOrderBtn.classList.remove("bg-slate-500");
+        $("#checkout__ConfirmBtnspinner").addClass("hidden");
+    }
+
     // Checkout form submission
     if (checkoutConfirmOrderBtn !== null) {
         checkoutConfirmOrderBtn.addEventListener("click", () => {
             checkoutErrorMsg.classList.add("hidden");
+
+            checkoutConfirmOrderBtn.disabled = true;
+            checkoutConfirmOrderBtn.classList.remove("bg-indigo-500");
+            checkoutConfirmOrderBtn.classList.remove("hover:bg-indigo-700");
+            checkoutConfirmOrderBtn.classList.add("bg-slate-500");
+            $("#checkout__ConfirmBtnspinner").removeClass("hidden");
             
             if (!firstName || firstName.value.trim() === "") {
                 showErrorMsg("First name field is required!");
@@ -119,5 +134,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 window.location.href = `/order-received/${data.order_id}/`;
             }
         }).catch(err => console.error(err));
+
+        checkoutButtonNormalState();
     }
 })

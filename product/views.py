@@ -11,7 +11,8 @@ from django.db.models import Sum
 import pytz
 from django.conf import settings
 from django.contrib import messages
-import json
+from django.template import loader
+from django.core.mail import send_mail
 
 
 # Getting logged in user cart object
@@ -56,6 +57,7 @@ def get_order_objects(user):
     return order_objs
 
 
+# Return all the products of top deal
 def get_top_deal_products(top_deal):
     return top_deal.product.all().order_by("-created_at")
 
@@ -533,6 +535,7 @@ class SearchProductView(View):
             products = Product.objects.filter(
                 Q(title__icontains=search_text) | Q(category__title__icontains=search_text)
             ).order_by("-created_at")
+            newest_products = Product.objects.all().order_by("-created_at")[:5]
             categories = Category.objects.all()
             wishlist_obj = get_wishlist_obj(request.user)
             cart_obj = get_cart_object(request.user)
@@ -541,6 +544,7 @@ class SearchProductView(View):
 
         args = {
             "products": products,
+            "newest_products": newest_products,
             "categories": categories,
             "wishlist_obj": wishlist_obj,
             "cart_obj": cart_obj,
@@ -591,6 +595,7 @@ class ShopView(View):
     def get(self, request):
         categories = Category.objects.all()
         products = Product.objects.all().order_by("-created_at")
+        newest_products = products[:5]
         
         min_price, max_price = get_min_and_max_price(products)
 
@@ -602,6 +607,7 @@ class ShopView(View):
         args = {
             "categories": categories,
             "products": products,
+            "newest_products": newest_products,
             "cart_obj": cart_obj,
             "wishlist_obj": wishlist_obj,
             "colors": colors,
@@ -660,6 +666,7 @@ class ShopFilterProductView(View):
                 categories = Category.objects.all()
 
                 products = Product.objects.all()
+                newest_products = products.order_by("-created_at")[:5]
                 min_price, max_price = get_min_and_max_price(products)
 
                 colors, sizes = get_unique_colors_and_sizes()
@@ -712,6 +719,7 @@ class ShopFilterProductView(View):
             "wishlist_obj": wishlist_obj,
             "categories": categories,
             "products": products,
+            "newest_products": newest_products,
             "colors": colors,
             "sizes": sizes,
             "checked_color": f"#{color}" if color is not None else None,
@@ -734,6 +742,7 @@ class CategoryWiseFilterProductView(View):
                     raise Http404("Invalid category!");
                 else:
                     products = Product.objects.filter(category=category_obj)
+                    newest_products = Product.objects.all().order_by("-created_at")[:5]
                     min_price, max_price = get_min_and_max_price(products)
 
                     colors, sizes = get_unique_colors_and_sizes()
@@ -787,6 +796,7 @@ class CategoryWiseFilterProductView(View):
             "wishlist_obj": wishlist_obj,
             "categories": categories,
             "products": products,
+            "newest_products": newest_products,
             "colors": colors,
             "sizes": sizes,
             "checked_color": f"#{color}" if color is not None else None,
@@ -809,6 +819,7 @@ class SubategoryWiseFilterProductView(View):
                     raise Http404("Invalid category!");
                 else:
                     products = Product.objects.filter(category__subcategory=subcategory_obj)
+                    newest_products = Product.objects.all().order_by("-created_at")[:5]
                     min_price, max_price = get_min_and_max_price(products)
 
                     colors, sizes = get_unique_colors_and_sizes()
@@ -862,6 +873,7 @@ class SubategoryWiseFilterProductView(View):
             "wishlist_obj": wishlist_obj,
             "categories": categories,
             "products": products,
+            "newest_products": newest_products,
             "colors": colors,
             "sizes": sizes,
             "checked_color": f"#{color}" if color is not None else None,
@@ -878,6 +890,7 @@ class SearchProductFilterView(View):
         if filter_min_price is not None and filter_max_price is not None and color is not None and size is not None and sort_way is not None:
             try:
                 categories = Category.objects.all()
+                newest_products = Product.objects.all().order_by("-created_at")[:5]
 
                 products = Product.objects.filter(
                     Q(title__icontains=search_text) | Q(category__title__icontains=search_text)
@@ -934,6 +947,7 @@ class SearchProductFilterView(View):
             "wishlist_obj": wishlist_obj,
             "categories": categories,
             "products": products,
+            "newest_products": newest_products,
             "colors": colors,
             "sizes": sizes,
             "checked_color": f"#{color}" if color is not None else None,
@@ -949,6 +963,7 @@ class CategoryWiseProductView(View):
     def get(self, request, slug):
         category_obj = get_object_or_404(Category, slug=slug)
         products = Product.objects.filter(category=category_obj)
+        newest_products = Product.objects.all().order_by("-created_at")[:5]
         wishlist_obj = get_wishlist_obj(request.user)
         cart_obj = get_cart_object(request.user)
         min_price, max_price = get_min_and_max_price(products)
@@ -958,6 +973,7 @@ class CategoryWiseProductView(View):
         args = {
             "category_obj": category_obj,
             "products": products,
+            "newest_products": newest_products,
             "wishlist_obj": wishlist_obj,
             "cart_obj": cart_obj,
             "min_price": min_price,
@@ -973,6 +989,7 @@ class SubcategoryWiseProductView(View):
     def get(self, request, slug):
         subcategory_obj = get_object_or_404(Subcategory, slug=slug)
         products = Product.objects.filter(category__subcategory=subcategory_obj)
+        newest_products = Product.objects.all().order_by("-created_at")[:5]
         wishlist_obj = get_wishlist_obj(request.user)
         cart_obj = get_cart_object(request.user)
         min_price, max_price = get_min_and_max_price(products)
@@ -982,6 +999,7 @@ class SubcategoryWiseProductView(View):
         args = {
             "subcategory_obj": subcategory_obj,
             "products": products,
+            "newest_products": newest_products,
             "wishlist_obj": wishlist_obj,
             "cart_obj": cart_obj,
             "min_price": min_price,
@@ -1490,6 +1508,26 @@ class SubmitCheckoutFormView(View):
                     cart_obj.is_paid = True if order_obj.is_paid else False
                     cart_obj.save()
 
+                    #### SENDING ORDER CONFIRM MAIL ####
+                    # Email template
+                    html_message = loader.render_to_string(
+                        "product/invoice_mail.html",
+                        {
+                            "username": request.user.username,
+                            "order_obj": order_obj,
+                        }
+                    )
+
+                    # Sending mail
+                    send_mail(
+                        'Order Confirmed',
+                        "",
+                        settings.EMAIL_HOST_USER,
+                        [request.user.email],
+                        fail_silently=False,
+                        html_message=html_message
+                    )
+
                     json_resp = {
                         "error": False,
                         "order_created": True,
@@ -1507,8 +1545,7 @@ class SubmitCheckoutFormView(View):
                     "invalid_country": True
                 }
 
-        return JsonResponse(json_resp, safe=False)
- 
+        return JsonResponse(json_resp, safe=False) 
 
 
 def get_formatted_datetime_wishlist_products(wishlist_obj):
@@ -1949,6 +1986,7 @@ class OrderReceivedView(View):
         order_obj = get_object_or_404(Order, user=request.user, uid=order_id)
         order_created_at = datetime.strftime(order_obj.created_at, "%b %d, %Y %I:%M %p")
         wishlist_obj = get_wishlist_obj(request.user)
+        cart_obj = get_cart_object(request.user)
 
         args = {
             "dashboard_header": dashboard_header,
@@ -1956,6 +1994,7 @@ class OrderReceivedView(View):
             "order_obj": order_obj,
             "order_created_at": order_created_at,
             "wishlist_obj": wishlist_obj,
+            "cart_obj": cart_obj
         }
         return render(request, "product/order_received.html", args)
 

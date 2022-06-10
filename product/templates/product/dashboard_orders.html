@@ -41,7 +41,7 @@
                                     {{ order.created_at }}
                                 </td>
                                 <td class="px-6 py-4 text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
-                                    ${{ order.total_price }}
+                                    ${{ order.total_price|floatformat:2 }}
                                 </td>
                                 <td class="px-6 py-4 uppercase">
                                     <p class="{% if order.order_status.title == 'Processing' %}bg-indigo-600{% elif order.order_status.title == 'Cancelled' %}bg-rose-600{% elif order.order_status.title == 'Paid' %}bg-sky-600{% else %}bg-green-600{% endif %} text-white px-3 py-1.5 rounded text-center">

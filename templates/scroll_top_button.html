@@ -1,0 +1,18 @@
+{% load static %}
+
+<style>
+    #scroll__toTop > svg {
+        opacity: 0.7;
+    }
+    
+    #scroll__toTop {
+        z-index: -1;
+        transition: all 0.3s ease-in-out;
+    }
+</style>
+
+<div id="scroll__toTop" class="fixed bottom-1.5 right-1.5 cursor-pointer opacity-0">
+    <span class="iconify w-full h-full text-4xl text-indigo-500" data-icon="akar-icons:circle-chevron-up-fill"></span>
+</div>
+
+<script src="{% static 'js/scroll_top_button.js' %}"></script>

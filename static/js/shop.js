@@ -7,6 +7,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const filterMinPrice = document.getElementById("filter__minPrice");
     const filterMaxPrice = document.getElementById("filter__maxPrice");
 
+    $(".shop__rightProductSearch").removeClass("invisible");
+
     const showProductSearchModal = () => {
         productSearchModal.classList.add("show__productSearchMainDiv");
         productSearchModal.querySelector("div").classList.add("show__productSearchModal");

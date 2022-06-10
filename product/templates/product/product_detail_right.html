@@ -24,10 +24,10 @@
                         ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
                     {% endwith %}
                 </p>
-                <p class="text-slate-500 line-through">${{ product.price }}</p>
+                <p class="text-slate-500 line-through">${{ product.price|floatformat:2 }}</p>
             </div>
         {% else %}
-            <p class="text-2xl text-indigo-500 font-semibold">${{ product.price }}</p>
+            <p class="text-2xl text-indigo-500 font-semibold">${{ product.price|floatformat:2 }}</p>
         {% endif %}
         <div class="text-slate-600 pb-3 border-b border-gray-300">
             {{ product.short_description|safe }}

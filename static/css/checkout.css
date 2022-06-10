@@ -1,0 +1,12 @@
+#checkout__ConfirmBtnspinner {
+    animation: checkout_spinner 1s linear infinite;
+}
+
+@keyframes checkout_spinner {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
