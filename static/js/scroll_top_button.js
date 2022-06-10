@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
             $("#scroll__toTop").css("z-index", -1);
             $("#scroll__toTop").css("opacity", 0);
         }
-    })
+    });
 
     // Scroll to top
     scrollTopBtn.addEventListener("click", () => {
@@ -18,5 +18,5 @@ window.addEventListener("DOMContentLoaded", () => {
             left: 0,
             behavior: "smooth"
         });
-    })
+    });
 })
