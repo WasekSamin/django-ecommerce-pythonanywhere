@@ -1,0 +1,103 @@
+{% load mathfilters %}
+
+<div class="ml-10 product__detailRight">
+    <div class="flex flex-col gap-y-3">
+        <div class="flex items-start justify-between pb-3 border-b border-gray-300">
+            <h5 class="text-lg font-semibold">{{ product.title }}</h5>
+            <div class="flex items-center gap-x-1 mt-2 prev__nextProductBtn">
+                {% if prev_product_obj is not None %}
+                    <a href="{% url 'product:product-detail' prev_product_obj.slug %}" class="text-indigo-500">
+                        <span class="iconify text-xl" data-icon="akar-icons:circle-chevron-left-fill"></span>
+                    </a>
+                {% endif %}
+                {% if next_product_obj is not None %}
+                    <a href="{% url 'product:product-detail' next_product_obj.slug %}" class="text-indigo-500">
+                        <span class="iconify text-xl" data-icon="akar-icons:circle-chevron-right-fill"></span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% if product.discount_percentage > 0 %}
+            <div class="flex items-center flex-wrap gap-2">
+                <p class="text-2xl text-indigo-500 font-semibold">
+                    {% with price=product.price discount=product.discount_percentage %}
+                        ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
+                    {% endwith %}
+                </p>
+                <p class="text-slate-500 line-through">${{ product.price }}</p>
+            </div>
+        {% else %}
+            <p class="text-2xl text-indigo-500 font-semibold">${{ product.price }}</p>
+        {% endif %}
+        <div class="text-slate-600 pb-3 border-b border-gray-300">
+            {{ product.short_description|safe }}
+        </div>
+        
+        {% comment %}Colors{% endcomment %}
+        {% if product_color_variation %}
+            <div class="flex flex-col gap-y-1 pb-3 border-b border-gray-300 mr-4">
+                <h5 class="font-semibold">Color</h5>
+                <p id="product__detailColorErrorMsg" class="hidden text-rose-500">Please select an option</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    {% for color in product_color_variation %}
+                        <button onclick="productDetailColorSelect(this)" id="product-detail-color-{{ color.uid }}" class="w-[1.2rem] h-[1.2rem] border border-gray-300 hover:shadow cursor-pointer" style="background-color: {{ color.color }}"></button>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% comment %}Size{% endcomment %}
+        {% if product_size_variation %}
+            <div class="flex flex-col gap-y-1 pb-3 border-b border-gray-300 mr-4">
+                <h5 class="font-semibold">Size</h5>
+                <p id="product__detailSizeErrorMsg" class="hidden text-rose-500">Please select an option</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    {% for size in product_size_variation %}
+                        <button onclick="productDetailSizeSelect(this)" id="product-detail-size-{{ size.uid }}" class="py-1.5 px-2 border border-gray-300 hover:shadow rounded cursor-pointer">{{ size.size }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="flex flex-col gap-y-3 pb-3 border-b border-gray-300 mr-4">
+            <p id="product__detailVariationPrice" class="hidden text-base font-semibold"></p>
+
+            <div>
+                <button id="product__detailClearVariation" class="hidden items-center text-rose-500 gap-x-1 cursor-pointer">
+                    <span class="iconify" data-icon="ep:circle-close-filled"></span>
+                    Clear
+                </button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center">
+                    <button id="product__detailQtyIncreaseBtn" class="px-2.5 py-1 border border-gray-300 font-semibold">+</button>
+                    <input id="product__detailQtyField" class="px-2.5 py-1 w-[4rem] text-center font-medium border border-gray-300 focus:outline-none" value="1" min="1" readonly />
+                    <button id="product__detailQtyDecreaseBtn" class="px-2.5 py-1 border border-gray-300 font-semibold">-</button>
+                </div>
+                <button id="product__detailAddToCart" class="rounded-full px-3 py-1.5 bg-indigo-500 flex items-center gap-x-1 text-white hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">
+                    <span class="iconify text-lg" data-icon="bx:cart"></span>
+                    Add to cart
+                </button>
+            </div>
+            <button id="product__detailWishlistBtn" onclick="{% if product_in_wishlist %}productDetailRemoveFromWishlist(){% else %}productDetailAddToWishlist(){% endif %}" class="flex items-center w-[10rem] justify-center gap-x-1 px-3 py-1.5 bg-rose-500 text-white hover:bg-rose-700 hover:shadow transition-all duration-300 ease-in-out">
+                <span class="iconify text-lg" data-icon="ant-design:heart-{% if product_in_wishlist %}filled{% else %}outlined{% endif %}"></span>
+                {% if product_in_wishlist %}
+                    Remove
+                {% else %}
+                    Add to wishlist
+                {% endif %}
+            </button>
+        </div>
+
+        <div class="flex gap-x-1 pb-3 border-b border-gray-300 mr-4">
+            <p class="font-semibold">Category:</p>
+            <a href="{% url 'product:category-wise-product' product.category.slug %}" class="text-slate-600 hover:text-indigo-500 transition-colors duration-300 ease-in-out">{{ product.category.title }}</a>
+        </div>
+
+        <div class="flex gap-x-1 mr-4">
+            <p class="font-semibold">SKU:</p>
+            <p class="text-slate-600">{{ product.sku }}</p>
+        </div>
+    </div>
+</div>

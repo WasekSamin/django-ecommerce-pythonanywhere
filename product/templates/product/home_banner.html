@@ -1,0 +1,11 @@
+{% load static %}
+
+<div id="home__banner" class="w-full h-[200px] sm:h-[75vh]">
+    {% for banner in banners %}
+        <div>
+            <img class="h-[200px] sm:h-[75vh] w-full object-fill" src="{{ banner.image.url }}" alt="">
+        </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'js/home_banner.js' %}"></script>

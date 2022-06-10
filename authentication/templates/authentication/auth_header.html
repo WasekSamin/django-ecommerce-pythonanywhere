@@ -1,0 +1,13 @@
+<div class="flex flex-wrap gap-3 font-semibold text-xl uppercase text-slate-500">
+    <p>
+        <a href="{% url 'authentication:login' %}" class="{% if current_page == "login" %}text-black{% endif %} hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+            Login
+        </a>
+    </p>
+    <p>Or</p>
+    <p>
+        <a href="{% url 'authentication:register' %}" class="{% if current_page == "register" %}text-black{% endif %} hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+            Register
+        </a>
+    </p>
+</div>

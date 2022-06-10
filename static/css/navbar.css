@@ -1,0 +1,36 @@
+#navbar__overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.show__navbarOverlay {
+    z-index: 10 !important;
+    opacity: 1;
+}
+
+#navbar__categories {
+    z-index: -1;
+}
+
+.show__navCategories {
+    z-index: 20 !important;
+    opacity: 1;
+}
+
+@media (max-width: 499px) {
+    #nav__sidebar {
+        width: 50%;
+    }
+}
+
+@media (max-width: 420px) {
+    #nav__sidebar {
+        width: 60%;
+    }
+}
+
+@media (max-width: 330px) {
+    #nav__sidebar {
+        width: 70%;
+    }
+}

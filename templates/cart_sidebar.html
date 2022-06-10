@@ -1,0 +1,73 @@
+{% load static %}
+{% load mathfilters %}
+
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+<div id="cart__sidebar" class="hidden sm:block fixed top-0 left-0 w-full h-screen opacity-0">
+    <div class="absolute right-[-100%] top-0 md:w-1/2 lg:w-[40%] z-50 h-full bg-white shadow-lg transition-all duration-300 ease-in-out">
+        <div class="flex flex-col h-full justify-between">
+            <div class="flex items-center justify-between p-3 pb-2 border-b border-gray-300">
+                <h5 class="font-semibold text-lg">Cart</h5>
+                <div>
+                    <button id="close__cartSidebar" class="hover:text-rose-500 transition-colors duration-300 ease-in-out cursor-pointer">
+                        <span class="iconify text-lg" data-icon="ep:circle-close-filled"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-hidden overflow-y-auto h-full">
+                <div id="cart__sidebarProductMainDiv" class="flex flex-col gap-y-3 my-5 px-3">
+                    {% if cart_obj is None or cart_obj.cart_items.count == 0 %}
+                        <div id="cart__sidebarEmptyProduct" class="mt-10">
+                            <h5 class="font-semibold text-rose-500 text-center">Your cart is empty!</h5>
+                        </div>
+                    {% else %}
+                        {% for item in cart_obj.cart_items.all %}
+                            <div id="cart-sidebar-product-{{ item.uid }}" class="flex items-center justify-between pb-3 border-b border-gray-300 last:border-0">
+                                <div class="flex flex-1 items-center gap-x-5">
+                                    <a href="{% url 'product:product-detail' item.product.slug %}">
+                                        <img data-src="{{ item.product.image.url }}" class="w-[50px] h-[80px] object-cover bg-slate-600 cart__sidebarProductImg" alt="">
+                                    </a>
+                                    <div class="flex flex-col gap-y-3">
+                                        <div class="flex flex-col gap-y-1">
+                                            <a href="{% url 'product:product-detail' item.product.slug %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                                                <p class="font-medium">{{ item.product.title }}</p>
+                                            </a>
+                                            {% if item.color %}
+                                                <p class="w-[1rem] h-[1rem] border border-gray-300" style="background-color: {{ item.color }}"></p>
+                                            {% endif %}
+                                            {% if item.size %}
+                                                <p class="text-slate-600">{{ item.size }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <p class="flex items-center flex-wrap gap-x-1">
+                                            {{ item.quantity }} x <span class="text-lg text-indigo-400">${{ item.price }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button onclick="cartSidebarProductRemove(this)" id="cart-sidebar-product-remove-{{ item.uid }}" class="hover:text-rose-500 transition-colors duration-300 ease-in-out cursor-pointer">
+                                        <span class="iconify text-lg" data-icon="bi:trash"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-300">
+                <div class="p-3 flex flex-col gap-y-3">
+                    <div class="flex items-center justify-between font-semibold">
+                        <h5 class="uppercase text-xl">Subtotal</h5>
+                        <p id="cart__sidebarTotalPrice" class="text-xl text-indigo-500">${% if cart_obj is not None and cart_obj.cart_items.count > 0 %}{{ cart_obj.total_price }}{% else %}0.00{% endif %}</p>
+                    </div>
+                    <a href="{% url 'product:cart' %}" class="py-2 px-5 bg-indigo-500 text-white text-center items-center hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">View Cart</a>
+                    <a href="{% url 'product:checkout' %}" class="py-2 px-5 bg-green-500 text-white text-center items-center hover:bg-green-700 hover:shadow transition-all duration-300 ease-in-out">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/cart_sidebar.js' %}"></script>

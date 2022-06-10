@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "product/track_order_form_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div class="flex flex-col gap-y-5">
+        <p class="text-slate-600">To track your order, please enter your Order ID in the box below and press the "Track" button. This was given to you on your receipt and in the confirmation email you should have received.</p>
+
+        <div>
+            {% for message in messages %}
+                <p class="text-center font-semibold text-rose-500 my-2">{{ message }}</p>
+            {% endfor %}
+        </div>
+
+        <form action={% url 'product:track-order' %} method="POST" class="flex flex-col gap-y-3">
+            {% csrf_token %}
+            <div  class="flex flex-wrap items-center gap-x-5 gap-y-3">
+                <div class="flex flex-col gap-y-3 flex-1">
+                    <label for="order_id">*Order ID</label>
+                    <input id="order_id" name="order_id" type="text" class="px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded">
+                </div>
+                <div class="flex flex-col gap-y-3 flex-1">
+                    <label for="billing_email">*Billing Email</label>
+                    <input id="billing_email" name="billing_email" type="email" value="{{ request.user.email }}" class="px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded">
+                </div>
+            </div>
+            <div class="mt-1">
+                <button type="submit" class="flex items-center cursor-pointer gap-x-1 bg-rose-500 text-white px-10 py-2 rounded hover:bg-rose-700 hover:shadow transition-all duration-300 ease-in-out">
+                    <span class="iconify text-lg" data-icon="bxs:rocket"></span>
+                    Track
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% load static %}
+
+<div class="flex flex-col gap-y-5">
+    <h5 class="uppercase font-semibold text-base ml-3 relative blog__headerLeftBorder">Recent Post</h5>
+
+    <div class="flex flex-col gap-y-3">
+        {% if recent_blogs %}
+            {% for blog in recent_blogs %}
+                <div class="flex items-center gap-3 pb-3 border-b border-gray-300 last:border-0">
+                    <a href="{% url 'product:blog-detail' blog.slug %}" class="w-[70px] min-w-[70px] max-w-[70px]">
+                        <img data-src="{{ blog.image }}" class="w-full h-[70px] object-cover bg-slate-600 blog__recentPostImg" alt="">
+                    </a>
+                    <div class="flex flex-col gap-y-1 blog__recentPostsContent">
+                        <a href="{% url 'product:blog-detail' blog.slug %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                            <p class="font-semibold capitalize">{{ blog.title }}</p>
+                        </a>
+                        <div class="text-slate-500 text-xs recent__blogDesc">{{ blog.content|safe }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static 'js/blog_recent_post.js' %}"></script>

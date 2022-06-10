@@ -1,0 +1,102 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+<div id="footer" class="bg-slate-200">
+    <div class="flex flex-wrap w-full px-5 md:px-10 lg:px-20 py-10 gap-x-10 gap-y-10">
+        <div id="footer__imgDiv" class="flex flex-col gap-y-2 w-[25%]">
+            <a href="{% url 'product:home' %}">
+                <img class="w-[100px] h-[100px] object-fill" src="{% static 'logo/logo.png' %}" alt="">
+            </a>
+            <div>
+                <p class="break-words">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit beatae expedita doloremque voluptatibus delectus enim odit tempora tenetur nihil distinctio.</p>
+            </div>
+        </div>
+
+        <div class="flex flex-auto flex-col gap-y-3">
+            <div class="flex items-center gap-x-3 pb-2 border-b border-gray-300">
+                <div class="bg-slate-800 footer__leftBorderDiv"></div>
+                <h5 class="font-semibold text-slate-800">For Customers</h5>
+            </div>
+
+            <div class="flex flex-1 flex-col gap-y-3">
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'product:dashboard-orders' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Orders</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'product:track-order' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Track Order</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% if request.user.is_authenticated %}{% url 'product:dashboard' %}{% else %}{% url 'authentication:login' %}{% endif %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Account Details</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'authentication:edit-password' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Lost Password</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-auto flex-col gap-y-3">
+            <div class="flex items-center gap-x-3 pb-2 border-b border-gray-300">
+                <div class="bg-slate-800 footer__leftBorderDiv"></div>
+                <h5 class="font-semibold text-slate-800">Quick Links</h5>
+            </div>
+
+            <div class="flex flex-col gap-y-3">
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'product:home' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Home</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% if request.user.is_authenticated %}{% url 'product:dashboard' %}{% else %}{% url 'authentication:login' %}{% endif %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">{% if request.user.is_authenticated %}Profile{% else %}Sign In{% endif %}</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'product:blog' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Blog</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'product:about-us' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">About Us</a>
+                </div>
+                <div class="pb-2 border-b border-gray-300">
+                    <a href="{% url 'product:contact-us' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">Contact Us</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-auto flex-col gap-y-3">
+            <div class="flex items-center gap-x-3 pb-2 border-b border-gray-300">
+                <div class="bg-slate-800 footer__leftBorderDiv"></div>
+                <h5 class="font-semibold text-slate-800">Contact Info</h5>
+            </div>
+
+            <div class="flex flex-col gap-y-3">
+                <div class="flex items-center gap-x-3 pb-2 border-b border-gray-300">
+                    <div class="p-2 border-2 border-gray-500 rounded-lg">
+                        <span class="iconify text-lg" data-icon="bxs:map"></span>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Address:</p>
+                        <p>Street name, FL 54785</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-x-3 pb-2 border-b border-gray-300">
+                    <div class="p-2 border-2 border-gray-500 rounded-lg">
+                        <span class="iconify text-lg" data-icon="carbon:phone-filled"></span>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Phone:</p>
+                        <p>12345678</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-x-3 pb-2 border-b border-gray-300">
+                    <div class="p-2 border-2 border-gray-500 rounded-lg">
+                        <span class="iconify text-lg" data-icon="ic:round-email"></span>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Email:</p>
+                        <p>wasek.samin47@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

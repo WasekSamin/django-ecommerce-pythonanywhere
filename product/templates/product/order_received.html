@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "product/dashboard_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div class="flex flex-col gap-y-5">
+        <div class="flex justify-center mb-5">
+            <span class="iconify text-7xl text-green-500" data-icon="line-md:confirm-circle"></span>
+        </div>
+
+        <p>
+            Thank you! Your order has been received.
+        </p>
+
+        <div class="flex flex-col gap-y-3 p-5 border border-gray-300 rounded shadow-lg">
+            <div class="flex flex-col gap-y-2">
+                <p class="uppercase">Order number:</p>
+                <p class="font-semibold">{{ order_obj.uid }}</p>
+            </div>
+            <div class="flex flex-col gap-y-2">
+                <p class="uppercase">Date:</p>
+                <p class="font-semibold">{{ order_created_at }}</p>
+            </div>
+            <div class="flex flex-col gap-y-2">
+                <p class="uppercase">Total:</p>
+                <p class="text-indigo-500 font-semibold">${{ order_obj.total_price|floatformat:2 }}</p>
+            </div>
+            <div class="flex flex-col gap-y-2">
+                <p class="uppercase">Payment Method:</p>
+                <p class="font-semibold capitalize">{{ order_obj.payment_method }}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-y-5">
+            <h5 class="font-semibold text-base">Order Details</h5>
+
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left">
+                    <thead class="uppercase bg-slate-200 font-semibold">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 min-w-[10rem] w-[10rem] max-w-[10rem]">
+                                Product
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order_obj.cart.cart_items.all %}
+                            <tr class="bg-white border-b border-gray-300 last:border-0">
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    {{ item.product.title }} x {{ item.quantity }}
+                                </td>
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    ${{ item.price|floatformat:2 }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="bg-slate-200">
+                        <tr>
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Subtotal
+                            </td>
+                            <td class="px-6 py-3 font-semibold text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                ${{ order_obj.price|floatformat:2 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Shipping Charge
+                            </td>
+                            <td class="px-6 py-3 font-semibold text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                ${{ order_obj.shipping_product_type.shipping_charge|floatformat:2 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Payment Method
+                            </td>
+                            <td class="px-6 py-3 capitalize min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                {{ order_obj.payment_method }}
+                            </td>
+                        </tr>
+                        <tr class="border-t border-gray-300">
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Total
+                            </td>
+                            <td class="px-6 py-3 font-semibold text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                ${{ order_obj.total_price|floatformat:2 }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

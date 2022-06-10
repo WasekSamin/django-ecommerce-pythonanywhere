@@ -1,0 +1,89 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+<div>
+    <div id="navbar" class="bg-white h-screen h-auto shadow w-full sm:px-10 lg:px-20">
+        <div class="flex sm:hidden items-center justify-between gap-x-1 px-5">
+            <div id="nav__hamburger" class="cursor-pointer">
+                <span class="iconify text-xl" data-icon="icon-park-outline:hamburger-button"></span>
+            </div>
+
+            <a href="{% url 'product:home' %}">
+                <img class="w-auto h-[60px] object-contain" src="{% static 'logo/logo.png' %}" alt="">
+            </a>
+
+            <div id="navbar__mobileSearchIconDiv" class="cursor-pointer sm:block transition-colors duration-300 ease-in-out">
+                <span class="iconify text-lg" data-icon="carbon:search"></span>
+            </div>
+        </div>
+
+        <div id="navbar__overlay" class="fixed top-0 left-0 w-full h-screen opacity-0 transition-all duration-300 ease-in-out"></div>
+
+        <div id="nav__sidebar" class="fixed z-50 sm:static top-0 w-[40%] h-screen sm:w-full sm:h-auto bg-white shadow-lg sm:shadow-none left-[-100%] sm:static flex flex-col sm:flex-row sm:items-center sm:justify-between transition-all duration-300 ease-in-out">
+            <a href="{% url 'product:home' %}" class="border-b border-gray-300 mb-3 sm:border-0 sm:mb-0">
+                <img class="w-full h-[100px] sm:w-auto sm:h-[60px] object-contain" src="{% static 'logo/logo.png' %}" alt="">
+            </a>
+            <div class="text-base sm:text-sm flex flex-col sm:flex-row sm:items-center sm:h-[60px] px-3 sm:px-0 gap-x-3 gap-y-2 sm:gap-y-0 font-medium">
+                <a href="{% url 'product:home' %}" class="sm:hover:text-indigo-500 flex items-center sm:h-full transition-colors duration-300 ease-in-out">
+                    Home
+                </a>
+                <a id="nav__shop" href="{% url 'product:shop' %}" class="flex items-center sm:h-full gap-x-1 sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                    Shop
+                    <span class="iconify hidden sm:block" data-icon="akar-icons:chevron-down"></span>
+                </a>
+                <a href="{% url 'product:blog' %}" class="sm:hover:text-indigo-500 flex items-center sm:h-full transition-colors duration-300 ease-in-out">
+                    Blog
+                </a>
+                <a href="{% url 'product:about-us' %}" class="sm:hover:text-indigo-500 flex items-center sm:h-full transition-colors duration-300 ease-in-out">
+                    About Us
+                </a>
+                <a href="{% url 'product:contact-us' %}" class="sm:hover:text-indigo-500 flex items-center sm:h-full transition-colors duration-300 ease-in-out">
+                    Contact Us
+                </a>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:h-[60px] px-3 sm:px-0 gap-x-3 gap-y-3 text-base sm:text-sm sm:gap-y-0 mt-3.5 sm:mt-0 font-medium">
+                <a href="{% if request.user.is_authenticated %}{% url 'product:dashboard' %}{% else %}{% url 'authentication:login' %}{% endif %}" class="flex items-center sm:h-full gap-x-1 sm:gap-x-0 sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                    <span class="iconify text-lg" data-icon="bxs:user"></span>
+                    <p class="sm:hidden">{% if request.user.is_authenticated %}Profile{% else %}Sign In{% endif %}</p>
+                </a>
+                <a href="{% url 'product:wishlist' %}" class="relative flex items-center sm:h-full gap-x-1 sm:gap-x-0">
+                    <span class="iconify text-lg sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out" data-icon="akar-icons:heart"></span>
+                    <p class="sm:hidden">Wishlist</p>
+                    <p id="navbar__wishlistCounter" class="px-2 py-1 {% if wishlist_obj is None or wishlist_obj.product.count == 0 %}hidden{% endif %} bg-rose-500 text-white static sm:absolute top-[8%] left-[30%] text-xs rounded-full">
+                        {% if wishlist_obj is not None and wishlist_obj.product.count > 0 %}
+                            {{ wishlist_obj.product.count }}
+                        {% endif %}
+                    </p>
+                </a>
+                <a href="{% url 'product:cart' %}" class="relative flex sm:hidden items-center sm:h-full gap-x-1 sm:gap-x-0 cursor-pointer">
+                    <span class="iconify text-lg sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out" data-icon="bx:cart"></span>
+                    <p class="sm:hidden">Cart</p>
+                    <p id="mobile__cartCounter" class="{% if cart_obj is None or cart_obj.cart_items.all.count == 0 %}hidden{% endif %} px-2 py-1 bg-rose-500 text-white static sm:absolute top-[8%] left-[30%] text-xs rounded-full">
+                        {% if cart_obj is not None and cart_obj.cart_items.all.count > 0 %}
+                            {{ cart_obj.cart_items.all.count }}
+                        {% endif %}
+                    </p>
+                </a>
+
+                <div id="nav__cart" class="relative hidden sm:flex items-center sm:h-full gap-x-1 sm:gap-x-0 cursor-pointer">
+                    <span class="iconify text-lg sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out" data-icon="bx:cart"></span>
+                    <p id="cart__counter" class="{% if cart_obj is None or cart_obj.cart_items.all.count == 0 %}hidden{% endif %} px-2 py-1 bg-rose-500 text-white static sm:absolute top-[8%] left-[30%] text-xs rounded-full">
+                        {% if cart_obj is not None and cart_obj.cart_items.all.count > 0 %}
+                            {{ cart_obj.cart_items.all.count }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div id="navbar__searchIconDiv" class="cursor-pointer hidden sm:block sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                    <span class="iconify text-lg" data-icon="carbon:search"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="navbar__categories" class="absolute w-full opacity-0 hidden sm:block transition-all duration-300 ease-in-out">
+        {% include "navbar_category.html" %}
+    </div>
+</div>
+
+<script src="{% static 'js/navbar.js' %}"></script>

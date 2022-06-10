@@ -1,0 +1,69 @@
+{% extends "product/dashboard.html" %}
+
+{% load static %}
+
+{% block dashboard %}
+<div class="ml-0 md:ml-7">
+    <div class="flex flex-col gap-y-7">
+        <p>
+            Hello <span class="font-semibold dashboard__accountUsernameHeader">{{ request.user.username }}</span>.
+            Not <span class="font-semibold dashboard__accountUsernameHeader">{{ request.user.username }}?</span>
+            <a href="{% url 'authentication:logout' %}" class="text-rose-500 hover:underline">Logout</a>
+        </p>
+
+        <form id="dashboard__accountForm" method="POST" class="flex flex-col gap-y-3 p-5 bg-white shadow-lg rounded-lg">
+            {% csrf_token %}
+            <h5 class="text-base font-semibold mb-2">Account Details</h5>
+
+            <p id="dashboard__accountErrorMsg" class="text-rose-500 font-medium text-center mb-2 hidden"></p>
+            
+            <div class="flex flex-col gap-y-3">
+                <label for="username">*Username</label>
+                <input id="username" value="{{ request.user.username }}" type="text" class="px-3 py-1.5 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded" required>
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <label for="email">*Email</label>
+                <input id="email" value="{{ request.user.email }}" type="text" class="px-3 py-1.5 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded" readonly required>
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <label for="phone_no">Phone No</label>
+                <input id="phone_no" value="{% if request.user.phone_no is not None %}{{ request.user.phone_no }}{% endif %}" type="text" class="px-3 py-1.5 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded">
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <label for="address">Address</label>
+                <input id="address" value="{% if request.user.address is not None %}{{ request.user.address }}{% endif %}" type="text" class="px-3 py-1.5 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded">
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <p>Change Profile Pic</p>
+                <label for="profile__Pic" id="user__profileDragField" class="px-10 bg-slate-200 font-medium rounded py-10 border border-gray-300 text-center cursor-pointer">Drag &amp; Drop</label>
+                <input id="profile__Pic" type="file" accept="image/*" type="text" class="hidden">
+
+                <div id="preview__profileImg" class="hidden relative w-[100px] min-w-[100px] max-w-[100px]">
+                    <div id="delete__profileImg" class="absolute right-0 top-0 cursor-pointer hover:text-rose-500 transition-colors duration-300 ease-in-out">
+                        <span class="iconify text-lg" data-icon="carbon:close-filled"></span>
+                    </div>
+                    <img class="w-full h-[100px] object-cover" alt="">
+                </div>
+            </div>
+
+            <div>
+                <p class="text-slate-600 text-xs">
+                    Want to change your password?
+                    <a href="{% url 'authentication:edit-password' %}" class="text-indigo-500 hover:underline">
+                        Edit Password
+                    </a>
+                </p>
+            </div>
+
+            <div class="mt-2">
+                <button type="submit" class="flex items-center gap-x-1 bg-indigo-500 text-white hover:bg-indigo-700 hover:shadow px-5 py-2 rounded transition-all duration-300 ease-in-out">
+                    <span class="iconify text-lg" data-icon="dashicons:update"></span>
+                    Update Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'js/dashboard_account.js' %}"></script>
+{% endblock %}

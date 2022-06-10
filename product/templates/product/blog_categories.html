@@ -1,0 +1,12 @@
+<div class="flex flex-col gap-y-3">
+    <h5 class="uppercase font-semibold text-base ml-3 relative blog__headerLeftBorder">Category</h5>
+    {% if blog_categories %}
+        <div class="flex flex-col gap-y-3">
+            {% for category in blog_categories %}
+                <a href="{% url 'product:category-wise-blog' category.slug %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                    {{ category.title }}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,78 @@
+{% extends "product/dashboard.html" %}
+
+{% load static %}
+
+{% block dashboard %}
+<div class="ml-0 md:ml-7">
+    <div class="flex flex-col gap-y-5">
+        <h5 class="text-base font-semibold">Purchased Orders</h5>
+
+        {% if order_objs is not None %}
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left">
+                    <thead class="uppercase bg-slate-200 font-semibold">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 min-w-[10rem] w-[10rem] max-w-[10rem]">
+                                Order Id
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Purchased Date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Total
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Order Status
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in order_objs %}
+                            <tr class="bg-white border-b border-gray-300 last:border-0">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-x-3 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                        {{ order.uid }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    {{ order.created_at }}
+                                </td>
+                                <td class="px-6 py-4 text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    ${{ order.total_price }}
+                                </td>
+                                <td class="px-6 py-4 uppercase">
+                                    <p class="{% if order.order_status.title == 'Processing' %}bg-indigo-600{% elif order.order_status.title == 'Cancelled' %}bg-rose-600{% elif order.order_status.title == 'Paid' %}bg-sky-600{% else %}bg-green-600{% endif %} text-white px-3 py-1.5 rounded text-center">
+                                        {{ order.order_status.title }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-4 font-medium text-indigo-500">
+                                    <a href="{% url 'product:dashboard-order-detail' order.uid %}" class="px-5 py-1.5 uppercase rounded bg-green-500 w-full text-white hover:bg-green-700 hover:shadow transition-all duration-300 ease-in-out">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="px-6 py-4 font-semibold text-base">
+                                Total Orders: <span class="text-indigo-500">{{ order_objs|length }}</span>
+                            </td>
+                            <td colspan="3" class="px-6 py-4 font-semibold text-base text-right">
+                                Total Purchased: <span class="text-indigo-500">${{ order_total_price|floatformat:2 }}</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        {% else %}
+            <div class="mt-5 mb-60">
+                <p class="text-rose-500 font-semibold text-center">You have not purchased any order yet!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

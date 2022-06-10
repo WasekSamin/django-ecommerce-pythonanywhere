@@ -1,0 +1,37 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/home_services.css' %}">
+
+<div class="mb-16">
+    <div id="home__services" class="grid grid-cols-3 gap-x-5 gap-y-3">
+        <div class="flex items-center bg-indigo-500 rounded-lg p-5 gap-x-3">
+            <div class="w-[2.5rem] min-w-[2.5rem] max-w-[2.5rem] h-[2.5rem] flex items-center justify-center bg-white home__serviceIcon">
+                <span class="iconify text-lg" data-icon="fa-solid:truck"></span>
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <h5 class="font-semibold text-white">Free Shipping</h5>
+                <p class="text-slate-200 text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. At sint fugiat hic, esse a beatae? Officia praesentium enim dolores fugit.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center bg-rose-500 rounded-lg p-5 gap-x-3">
+            <div class="w-[2.5rem] min-w-[2.5rem] max-w-[2.5rem] h-[2.5rem] flex items-center justify-center bg-white home__serviceIcon">
+                <span class="iconify text-lg" data-icon="fa6-solid:handshake"></span>
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <h5 class="font-semibold text-white">24/7 Guarantee</h5>
+                <p class="text-slate-200 text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. At sint fugiat hic, esse a beatae? Officia praesentium enim dolores fugit.</p>
+            </div>
+        </div>
+
+        <div class="flex items-center bg-orange-500 rounded-lg p-5 gap-x-3">
+            <div class="w-[2.5rem] min-w-[2.5rem] max-w-[2.5rem] h-[2.5rem] flex items-center justify-center bg-white home__serviceIcon">
+                <span class="iconify text-lg" data-icon="bi:credit-card-2-back-fill"></span>
+            </div>
+            <div class="flex flex-col gap-y-3">
+                <h5 class="font-semibold text-white">Easy Payment</h5>
+                <p class="text-slate-200 text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. At sint fugiat hic, esse a beatae? Officia praesentium enim dolores fugit.</p>
+            </div>
+        </div>
+    </div>
+</div>

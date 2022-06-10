@@ -1,0 +1,25 @@
+.footer__leftBorderDiv {
+    width: 2px;
+    height: 70%;
+}
+
+@media (max-width: 1024px) {
+    #footer > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #footer__imgDiv {
+        width: 100%;
+    }
+}
+
+@media (max-width: 730px) {
+    #footer > div {
+        grid-template-columns: 100%;
+    }
+
+    #footer__imgDiv > a > img {
+        margin: 0 auto;
+    }
+}

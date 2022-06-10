@@ -1,0 +1,70 @@
+{% extends "product/dashboard.html" %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block dashboard %}
+
+<link rel="stylesheet" href="{% static 'css/home_products.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard_wishlist.css' %}">
+
+<div class="ml-0 md:ml-7">
+    <div id="dashboard__wishlistMainDiv" class="flex flex-col gap-y-5">
+        <h5 class="text-base font-semibold">Your Wishlist</h5>
+        {% if wishlist_obj is not None and wishlist_obj.product.count > 0 %}
+            <div class="flex flex-wrap gap-5 home__product dashboard__wishlist">
+                {% for product in wishlist_obj.product.all %}
+                    <div id="dashboard-wishlist-product-div-{{ product.uid }}" class="w-[200px] flex flex-col items-center gap-y-3">
+                        <div class="relative h-[300px] w-full overflow-hidden bg-slate-600 home__productImageContent">
+                            <a href="{% url 'product:product-detail' product.slug %}" class="w-full h-full">
+                                <img class="w-full h-full object-cover hover:scale-125 transition-all duration-300 ease-in-out" data-src="{{ product.image.url }}" alt="">
+                            </a>
+                            {% if product.discount_percentage > 0 %}
+                                <div class="absolute left-0 top-0 px-3 py-1 bg-indigo-500 text-white text-xs">
+                                    <p>{{ product.discount_percentage }}% OFF</p>
+                                </div>
+                            {% endif %}
+                            <button onclick="removeFromDashboardWishlist(this)" id="dashboard-product-wishlist-{{ product.uid }}" class="absolute right-[-100%] top-0 hidden sm:flex items-center gap-x-1 text-xs px-3 py-1 bg-rose-500 hover:bg-rose-700 text-white cursor-pointer transition-all duration-300 ease-in-out product__wishlistBtn">
+                                <span class="iconify text-sm" data-icon="ant-design:heart-filled"></span>
+                                <p>
+                                    Remove
+                                </p>
+                            </button>
+                            <button onclick="quickView(this)" id="product-{{ product.uid }}" class="absolute hidden opacity-0 left-0 bottom-0 w-full sm:flex items-center justify-center gap-x-0.5 px-5 py-1.5 text-slate-100 cursor-pointer transition-all duration-300 ease-in-out product__quickViewBtn">
+                                <span class="iconify text-lg" data-icon="clarity:eye-solid"></span>
+                                Quick View
+                            </button>
+                        </div>
+        
+                        <div class="flex flex-col items-center gap-y-1">
+                            <a href="{% url 'product:product-detail' product.slug %}" class="sm:hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                                <p>{{ product.title }}</p>
+                            </a>
+                            {% if product.discount_percentage > 0 %}
+                                <div class="flex flex-wrap gap-2 items-center">
+                                    <p class="text-base font-medium text-indigo-500">
+                                        {% with price=product.price discount=product.discount_percentage %}
+                                            ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
+                                        {% endwith %}
+                                    </p>
+                                    <p class="text-slate-500 line-through">{{ product.price }}</p>
+                                </div>
+                            {% else %}
+                                <p class="text-base font-medium text-indigo-500">
+                                    ${{ product.price }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="mt-5 mb-60">
+                <p class="text-rose-500 font-semibold text-center">You have no product in your wishlist!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static 'js/dashboard_wishlist.js' %}"></script>
+{% endblock %}

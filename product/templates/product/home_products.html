@@ -1,0 +1,38 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/home_products.css' %}">
+
+<div class="mb-16">
+    <div class="flex flex-col items-center gap-y-3">
+        <h5 class="font-medium text-xl">Top <span class="text-indigo-500 font-semibold">Interesting</span></h5>
+        {% include "product/header_border.html" %}
+    </div>
+    
+    <div class="my-10">
+        <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-xl text-slate-800">
+            <button id="home__newestProductBtn" class="font-semibold hover:text-indigo-500 transition-colors duration-300 ease-in-out home__productActiveBtn">Newest</button>
+            <button id="home__bestSellersProductBtn" class="font-semibold hover:text-indigo-500 transition-colors duration-300 ease-in-out">Top Deals</button>
+            <button id="home__cheapestProductBtn" class="font-semibold hover:text-indigo-500 transition-colors duration-300 ease-in-out">Cheapest</button>
+        </div>
+    </div>
+
+    <div>
+        <div id="home__productSpinner" class="flex justify-center hidden">
+            <span class="iconify text-3xl text-slate-600" data-icon="icomoon-free:spinner9"></span>
+        </div>
+
+        <div id="home__newestProducts" class="hidden">
+            {% include "product/home_newest_products.html" %}
+        </div>
+
+        <div id="home__bestSellerProducts" class="hidden">
+            {% include "product/top_deal_products.html" %}
+        </div>
+
+        <div id="home__cheapestProducts" class="hidden">
+            {% include "product/home_cheapest_products.html" %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/home_products.js' %}"></script>

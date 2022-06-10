@@ -1,0 +1,25 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/all_categories.css' %}">
+
+<div class="my-16">
+    <div class="flex flex-col items-center gap-y-3">
+        <h5 class="font-medium text-xl">All <span class="text-indigo-500 font-semibold">Categories</span></h5>
+        {% include "product/header_border.html" %}
+    </div>
+
+    <div class="mt-10">
+        <div id="nav__catContent">
+            {% for category in categories %}
+                <a href="{% url 'product:category-wise-product' category.slug %}" class="relative w-[300px] h-[250px] sm:h-[300px] overflow-hidden bg-slate-600 nav__catDetails">
+                    <img class="w-full h-full object-cover hover:scale-125 transition-all duration-300 ease-in-out" data-src="{{ category.image.url }}" alt="">
+                    <div class="absolute bottom-0 left-0 w-full bg-rose-500 text-white text-center px-5 py-1.5">
+                        <p class="text-base">{{ category.title }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/all_categories.js' %}"></script>

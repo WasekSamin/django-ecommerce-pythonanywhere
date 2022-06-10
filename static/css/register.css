@@ -1,0 +1,13 @@
+#auth__spinner {
+    animation: auth_spinner 1s linear infinite;
+}
+
+@keyframes auth_spinner {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

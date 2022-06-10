@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+
+{% include "product/wishlist_header.html" %}
+
+<div id="wishlist__mainDiv" class="px-5 md:px-10 lg:px-20 my-10">
+    {% if wishlist_obj is not None or products %}
+        {% if products|length > 0 %}
+            <div id="wishlist__productTableDiv" class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left">
+                    <thead class="uppercase bg-slate-200 font-semibold">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Product
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Price
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Added Date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr id="wishlist-product-{{ product.uid }}" class="bg-white border-b border-gray-300 last:border-0">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-x-3">
+                                        <div>
+                                            <button onclick="wishlistRemove(this)" id="wishlist-product-remove-{{ product.uid }}" class="text-slate-500 hover:text-rose-500 transition-colors duration-300 ease-in-out">
+                                                <span class="iconify text-lg" data-icon="carbon:close-outline"></span>
+                                            </button>
+                                        </div>
+                                        <a href="{% url 'product:product-detail' product.slug %}">
+                                            <img data-src="{{ product.image }}" class="min-w-[50px] w-[50px] max-w-[50px] h-[80px] object-cover bg-slate-600 wishlist__productImg" alt="">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    <a href="{% url 'product:product-detail' product.slug %}" class=" hover:text-indigo-500 font-medium transition-colors duration-300 ease-in-out">
+                                        {{ product.title }}
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4 text-indigo-500">
+                                    {% if product.discount_percentage > 0 %}
+                                        <div class="flex flex-wrap gap-1">
+                                            
+                                            {% with price=product.price discount=product.discount_percentage %}
+                                                ${{ price|mul:discount|div:100|sub:price|abs|floatformat:2 }}
+                                            {% endwith %}
+                                            <p class="bg-rose-500 text-white px-2 py-1 text-xs whitespace-nowrap">{{ product.discount_percentage }}% OFF</p>
+                                        </div>
+                                    {% else %}
+                                    <div class="flex flex-wrap gap-1">${{ product.price }}</div>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    {{ product.added_date }}
+                                </td>
+                                <td>
+                                    <a href="{% url 'product:product-detail' product.slug %}" class="px-5 py-1.5 uppercase rounded bg-green-500 w-full text-white hover:bg-green-700 hover:shadow transition-all duration-300 ease-in-out">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="mt-5 mb-28 text-center text-rose-500 font-semibold">Your have no product in your wishlist!</p>
+        {% endif %}
+    {% else %}
+        <div class="mb-28 flex flex-col gap-y-3 items-center font-medium">
+                        <p class="text-rose-500">You need to login first to see your wishlist!</p>
+                        <a href="{% url 'authentication:login' %}" class="mb-32 underline hover:text-indigo-500 transition-colors duration-300 ease-in-out">Sign In</a>
+        </div>
+    {% endif %}
+</div>
+
+<script src="{% static 'js/wishlist.js' %}"></script>
+{% endblock %}

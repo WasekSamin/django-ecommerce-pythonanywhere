@@ -1,0 +1,16 @@
+<div class="px-5 md:px-10 lg:px-20 py-10 bg-slate-200">
+    <div class="flex flex-wrap gap-y-3 items-center justify-between">
+        <h5 class="font-semibold text-xl">Order {{ order_obj.uid }}</h5>
+        <div class="flex items-center gap-x-1 text-slate-600">
+            <a href="{% url 'product:home' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                <span class="iconify" data-icon="ant-design:home-filled"></span>
+            </a>
+            <span class="iconify" data-icon="ant-design:right-outlined"></span>
+            <a href="{% url 'product:track-order' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                <p>Track Order</p>
+            </a>
+            <span class="iconify" data-icon="ant-design:right-outlined"></span>
+            <p class="product__detailHeaderTitle">{{ order_obj.uid }}</p>
+        </div>
+    </div>
+</div>

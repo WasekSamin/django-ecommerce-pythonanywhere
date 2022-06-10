@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/shop.css' %}">
+
+<div>
+    {% include "product/subcategory_wise_product_header.html" %}
+</div>
+
+<div class="px-5 md:px-10 lg:px-20">
+    <div class="my-10 grid overflow-x-hidden product__mainGrid">
+        <div class="mr-7 product__shopLeft">
+            {% include "product/shop_left.html" %}
+        </div>
+        <div>
+            {% include "product/shop_right.html" %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/subcategory_product.js' %}"></script>
+{% endblock %}

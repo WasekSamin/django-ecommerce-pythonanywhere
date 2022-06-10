@@ -1,0 +1,171 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/shop_left.css' %}">
+
+<div class="product__leftContent">
+    <div class="flex flex-col gap-y-5">
+        <div class="justify-end hidden product__hideFilter">
+            <div class="flex items-center gap-x-1 text-rose-500 cursor-pointer">
+                <span class="iconify text-lg" data-icon="ep:circle-close-filled"></span>
+                <p class="font-medium">Hide Filter</p>
+            </div>
+        </div>
+
+        <form method="GET" class="items-center flex-1 border border-gray-300 hidden rounded bg-white shop__leftProductSearch">
+            <input type="text" class="w-full px-3 py-[0.3rem] rounded-l focus:outline-none" placeholder="Search Product...">
+            <button type="submit" class="cursor-pointer pr-1 rounded-r">
+                <span class="iconify bg-white text-lg" data-icon="carbon:search"></span>
+            </button>
+        </form>
+
+        {% comment %}Filter by price{% endcomment %}
+        <div class="flex flex-col gap-y-3">
+            <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Filter by price</h5>
+            <div>
+                <div class="bg-indigo-500 relative product__priceSlider"></div>
+                <div class="relative product__priceRangeInput">
+                    <input type="range" class="product__priceRangeMin" min="{{ min_price }}" max="{{ max_price }}" value="{{ min_price }}">
+                    <input type="range" class="product__priceRangeMax" min="{{ min_price }}" max="{{ max_price }}" value="{{ max_price }}">
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-3 justify-between mt-1">
+                <div class="flex items-center gap-x-1">
+                    <p class="font-medium uppercase">Price:</p>
+                    <p class="product__rangeMinVal">{% if filter_min_price is not None %}${{ filter_min_price|floatformat:2 }}{% else %}${{ min_price|floatformat:2 }}{% endif %}</p>
+                    <p>-</p>
+                    <p class="product__rangeMaxVal">{% if filter_max_price is not None %}${{ filter_max_price|floatformat:2 }}{% else %}${{ max_price|floatformat:2 }}{% endif %}</p>
+                </div>
+
+                {{ filter_min_price|json_script:"filter__minPrice" }}
+                {{ filter_max_price|json_script:"filter__maxPrice" }}
+
+                <div>
+                    <button id="shop__priceFilter" class="px-3 py-1 bg-rose-500 text-white hover:bg-rose-700 hover:shadow transition-all duration-300 ease-in-out">Filter</button>
+                </div>
+            </div>
+        </div>
+
+        {% comment %}Filter by color{% endcomment %}
+        {% if colors %}
+            <div class="flex flex-col gap-y-3">
+                <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Filter by color</h5>
+                <div class="flex flex-col gap-y-2">
+                    {% for color in colors %}
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-x-1">
+                                <input {% if checked_color is not None and color|lower == checked_color|lower %}checked{% endif %} onclick="shopProductColorSelect(this)" type="checkbox" id="shop-product-{{ color }}">
+                                <label class="capitalize" for="shop-product-{{ color }}">{{ color }}</label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% comment %}Filter by size{% endcomment %}
+        {% if sizes %}
+            <div class="flex flex-col gap-y-3">
+                <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Filter by Size</h5>
+                <div class="flex flex-col gap-y-2">
+                    {% for size in sizes %}
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-x-1">
+                                <input {% if checked_size is not None and size|lower == checked_size|lower %}checked{% endif %} onclick="shopProductSizeSelect(this)" type="checkbox" id="shop-product-{{ size }}">
+                                <label class="capitalize" for="shop-product-{{ size }}">{{ size }}</label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Best selling products -->
+        <div class="flex flex-col gap-y-3 shop__productBestSelling">
+            <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Best selling products</h5>
+            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
+                <div class="flex items-center gap-x-3">
+                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
+                        <img src="{% static 'demo_images/product-1.jpg' %}" class="w-full h-[70px] object-cover" alt="">
+                    </a>
+                    <div class="flex flex-col gap-y-1">
+                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                            <p class="font-semibold">Product title</p>
+                        </a>
+                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
+                <div class="flex items-center gap-x-3">
+                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
+                        <img src="{% static 'demo_images/product-2.jpg' %}" class="w-full h-[70px] object-cover" alt="">
+                    </a>
+                    <div class="flex flex-col gap-y-1">
+                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                            <p class="font-semibold">Product title</p>
+                        </a>
+                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
+                <div class="flex items-center gap-x-3">
+                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
+                        <img src="{% static 'demo_images/product-9.jpg' %}" class="w-full h-[70px] object-cover" alt="">
+                    </a>
+                    <div class="flex flex-col gap-y-1">
+                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                            <p class="font-semibold">Product title</p>
+                        </a>
+                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
+                <div class="flex items-center gap-x-3">
+                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
+                        <img src="{% static 'demo_images/product-8.jpg' %}" class="w-full h-[70px] object-cover" alt="">
+                    </a>
+                    <div class="flex flex-col gap-y-1">
+                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                            <p class="font-semibold">Product title</p>
+                        </a>
+                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-2 pb-3 border-b border-gray-300 last:border-0">
+                <div class="flex items-center gap-x-3">
+                    <a href="#" class="w-[70px] min-w-[70px] max-w-[70px]">
+                        <img src="{% static 'demo_images/product-7.jpg' %}" class="w-full h-[70px] object-cover" alt="">
+                    </a>
+                    <div class="flex flex-col gap-y-1">
+                        <a href="#" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                            <p class="font-semibold">Product title</p>
+                        </a>
+                        <p class="text-indigo-500 text-base">$200.00 - $400.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %}Product categories{% endcomment %}
+        <div class="flex flex-col gap-y-3">
+            <h5 class="uppercase text-base font-semibold relative ml-3 product__headerLeftBorder">Product Categories</h5>
+            <div class="flex flex-col gap-y-2">
+                {% for category in categories %}
+                    <a href="{% url 'product:category-wise-product' category.slug %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">{{ category.title }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-5 hidden show__filterProduct">
+    <div class="flex items-center items-center gap-x-1 cursor-pointer hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+        <span class="iconify text-lg" data-icon="clarity:filter-solid" data-flip="horizontal"></span>
+        Filter
+    </div>
+</div>
+
+<script src="{% static 'js/shop_left.js' %}"></script>

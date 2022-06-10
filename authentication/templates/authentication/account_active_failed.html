@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="px-5 md:px-10 lg:px-20 mt-20 mb-52 flex flex-col gap-y-3 items-center">
+    <p class="font-semibold text-rose-500">Your account is failed to get activated!</p>
+    <a href="{% url 'product:contact-us' %}" class="px-10 rounded py-2 underline transition-all duration-300 ease-in-out">Report your issue</a>
+</div>
+
+{% endblock %}

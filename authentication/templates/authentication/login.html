@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+
+<div class="px-5 md:px-10 lg:px-20 flex flex-col items-center gap-y-7 justify-center w-full my-10">
+    {% include "authentication/auth_header.html" %}
+    
+    <form id="login__form" method="POST" action="{% url 'authentication:make-login' %}" class="flex flex-col gap-y-3 py-5 px-10 w-full sm:w-[70%] md:w-1/2 lg:w-[40%] border border-gray-300 rounded-lg shadow-lg">
+        {% csrf_token %}
+        <p id="error__msg" class="hidden text-center text-center mb-2 text-rose-600 font-semibold">Error Message!</p>
+        <div id="account__activeText" class="hidden flex-col gap-y-1 text-center text-center mb-2 text-green-600 font-medium">
+            <p>You need to activate your account to login!</p>
+            <p>Check your mail to activate account.</p>
+        </div>
+        
+        <div class="flex flex-col gap-y-3">
+            <label for="email">*Email</label>
+            <input autofocus id="email" type="email" class="px-3 py-2 focus:outline-none rounded border border-gray-300 focus:ring-2 focus:ring-gray-300" required>
+        </div>
+        <div class="flex flex-col gap-y-3">
+            <label for="password">*Password</label>
+            <input id="password" type="password" class="px-3 py-2 focus:outline-none rounded border border-gray-300 focus:ring-2 focus:ring-gray-300" required>
+        </div>
+        <div>
+            <button id="auth__submitBtn" type="submit" class="flex items-center gap-x-1.5 flex-wrap gap-y-1.5 px-10 py-2 cursor-pointer bg-indigo-500 text-white hover:bg-indigo-700 hover:shadow rounded uppercase transition-all duration-300 ease-in-out">
+                Sign In
+                <div id="auth__spinner" class="hidden">
+                    <span class="iconify text-lg" data-icon="icomoon-free:spinner9"></span>
+                </div>
+            </button>
+        </div>
+
+        <p class="text-slate-500 text-xs text-center mt-2">
+            Forgot your password? <a href="{% url 'authentication:edit-password' %}" class="underline hover:text-indigo-500 transition-colors duration-300 ease-in-out">Click here</a>
+        </p>
+    </form>
+</div>
+
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}

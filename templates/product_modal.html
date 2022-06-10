@@ -1,0 +1,83 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/product_modal.css' %}">
+
+{% comment %}Show loading spinner while fetching data{% endcomment %}
+<div id="product__loadingScreenModal" class="hidden fixed top-0 left-0 w-full h-screen z-20">
+    <div class="absolute top-[50%] left-[50%] z-50">
+        <span class="iconify text-5xl text-slate-200" data-icon="icomoon-free:spinner2"></span>
+    </div>
+</div>
+
+<div class="fixed top-0 left-0 w-full h-full opacity-0" id="home__productModal">
+    <div class="absolute top-[50%] left-[50%] sm:w-[70%] lg:w-[50%] bg-white rounded-lg shadow-lg">
+        <div id="home__productModalGrid" class="grid gap-x-2 w-full">
+            {% comment %}Images slider{% endcomment %}
+            <div id="product__modalImgDiv" class="w-full h-[350px] relative">
+            </div>
+            <div id="product__modalScrollView" class="flex flex-col gap-y-3 pl-3 py-3 h-[70vh] overflow-x-hidden overflow-y-auto">
+                <div class="flex flex-col gap-y-3 pb-3 border-b border-gray-300 mr-4">
+                    <h5 id="product__modalTitle" class="text-lg font-semibold"></h5>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <p id="product__modalPrice" class="text-lg text-indigo-500 font-semibold"></p>
+                        <p id="product__prevPrice" class="text-slate-500 line-through"></p>
+                    </div>
+                    <p id="product__modalShortDesc" class="text-slate-600"></p>
+                </div>
+
+                {% comment %}Color{% endcomment %}
+                <div id="product__modalColorVariation" class="hidden flex-col gap-y-1 pb-3 border-b border-gray-300 mr-4">
+                    <h5 class="font-semibold">Color</h5>
+                    <p id="product__modalColorErrorMsg" class="hidden text-rose-500">Please select an option</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                    </div>
+                </div>
+
+                {% comment %}Size{% endcomment %}
+                <div id="product__modalSizeVariation" class="hidden flex-col gap-y-1 pb-3 border-b border-gray-300 mr-4">
+                    <h5 class="font-semibold">Size</h5>
+                    <p id="product__modalSizeErrorMsg" class="hidden text-rose-500">Please select an option</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-y-3 pb-3 border-b border-gray-300 mr-4">
+                    <div>
+                        <button id="clear__productModalOptionBtn" class="hidden items-center text-rose-500 gap-x-1 cursor-pointer">
+                            <span class="iconify" data-icon="ep:circle-close-filled"></span>
+                            Clear
+                        </button>
+                    </div>
+
+                    <p id="product__modalVariationPrice" class="hidden font-semibold"></p>
+                    
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="flex items-center">
+                            <button id="product__modalIncreaseQtyBtn" class="px-2.5 py-1 border border-gray-300 font-semibold">+</button>
+                            <input id="product__modalQtyField" class="px-2.5 py-1 w-[4rem] text-center font-medium border border-gray-300 focus:outline-none" value="1" min="1" readonly />
+                            <button id="product__modalDecreaseQtyBtn" class="px-2.5 py-1 border border-gray-300 font-semibold">-</button>
+                        </div>
+                        <button id="product__modalAddToCartBtn" class="rounded-full px-3 py-1.5 bg-indigo-500 flex items-center gap-x-1 text-white hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">
+                            <span class="iconify text-lg" data-icon="bx:cart"></span>
+                            Add to cart
+                        </button>
+                    </div>
+                    <button id="product__modalWishlistBtn" class="flex items-center w-[10rem] justify-center gap-x-1 px-3 py-1.5 bg-rose-500 text-white hover:bg-rose-700 hover:shadow transition-all duration-300 ease-in-out">
+                    </button>
+                </div>
+
+                <div class="flex gap-x-1 pb-3 border-b border-gray-300 mr-4">
+                    <p class="font-semibold">Category:</p>
+                    <a id="product__modalCategory" href="#" class="text-slate-600 hover:text-indigo-500 transition-colors duration-300 ease-in-out">Cloths</a>
+                </div>
+
+                <div class="flex gap-x-1 mr-4">
+                    <p class="font-semibold">SKU:</p>
+                    <p id="product__modalSku" class="text-slate-600">T-Shirt001</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/product_modal.js' %}"></script>

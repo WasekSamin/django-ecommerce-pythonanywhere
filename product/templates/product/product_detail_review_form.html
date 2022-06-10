@@ -1,0 +1,36 @@
+<form method="POST" id="product__ReviewForm" class="flex flex-col gap-y-3">
+    {% csrf_token %}
+    <div class="flex flex-col gap-y-2">
+        <p>*Your Rating</p>
+        <div class="flex items-center gap-x-1">
+            <div id="product__star1" class="cursor-pointer">
+                <span class="iconify text-base" data-icon="ant-design:star-outlined"></span>
+            </div>
+            <div id="product__star2" class="cursor-pointer">
+                <span class="iconify text-base" data-icon="ant-design:star-outlined"></span>
+            </div>
+            <div id="product__star3" class="cursor-pointer">
+                <span class="iconify text-base" data-icon="ant-design:star-outlined"></span>
+            </div>
+            <div id="product__star4" class="cursor-pointer">
+                <span class="iconify text-base" data-icon="ant-design:star-outlined"></span>
+            </div>
+            <div id="product__star5" class="cursor-pointer">
+                <span class="iconify text-base" data-icon="ant-design:star-outlined"></span>
+            </div>
+        </div>
+        <p id="product__detailRatingErrorMsg" class="text-rose-500 font-medium hidden">Rating field is required!</p>
+    </div>
+    <div class="flex flex-col gap-y-2">
+        <label for="product__review">*Your Review</label>
+        <textarea id="product__review" rows="3" class="rounded focus:outline-none border border-gray-300 focus:ring-2 focus:ring-gray-300 px-3 py-2"></textarea>
+        <p id="product__detailReviewErrorMsg" class="text-rose-500 font-medium hidden">Review field is required!</p>
+    </div>
+
+    <div>
+        <button type="submit" id="product__detailReviewSubmitBtn" class="bg-indigo-500 hover:bg-indigo-700 hover:shadow text-white px-5 rounded py-2 flex items-center gap-x-1 transition-all duration-300 ease-in-out">
+            <span class="iconify text-lg" data-icon="cil:paper-plane"></span>
+            POST
+        </button>
+    </div>
+</form>

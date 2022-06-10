@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/xzoom.css' %}">
+
+{% include "product/product_detail_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div id="product__detailGrid" class="grid">
+        {% include "product/product_detail_left.html" %}
+        {% include "product/product_detail_right.html" %}
+    </div>
+    <div class="my-10">
+        {% include "product/product_detail_extra.html" %}
+    </div>
+
+    <div class="my-10">
+        {% include "product/product_detail_share.html" %}
+    </div>
+
+    <div class="my-10">
+        {% include "product/product_detail_related_products.html" %}
+    </div>
+</div>
+
+{{ product.uid|json_script:"product__uid" }}
+{{ color_required|json_script:"color__required" }}
+{{ size_required|json_script:"size__required" }}
+
+<script src="{% static 'js/xzoom.js' %}"></script>
+<script src="{% static 'js/product_detail.js' %}"></script>
+{% endblock %}

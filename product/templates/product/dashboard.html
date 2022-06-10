@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+{% include "product/dashboard_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div id="dashboard__grid" class="grid">
+        {% include "product/dashboard_left.html" %}
+        {% block dashboard %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/dashboard_left.css' %}">
+
+<div id="dashboard__left" class="fixed top-0 left-0 md:static w-full h-screen md:w-full md:h-auto opacity-0 md:opacity-100">
+    <div class="absolute z-50 top-0 left-[-100%] md:left-0 md:static w-1/2 h-full bg-white shadow-lg  md:shadow-none md:bg-transparent md:w-full md:h-auto overflow-x-hidden overflow-y-auto transition-all duration-300 ease-in-out">
+        <div class="justify-end flex md:hidden pr-5 pt-5">
+            <div id="dashboard__mobileMenuOption" class="flex items-center gap-x-1 text-rose-500 cursor-pointer">
+                <span class="iconify text-lg" data-icon="ep:circle-close-filled"></span>
+                <p class="font-medium">Hide Menu</p>
+            </div>
+        </div>
+
+        <div class="p-5 md:p-0 w-full h-full flex flex-col gap-y-7 border-0 md:pr-7 md:border-r border-gray-300">
+            <div class="flex flex-wrap items-center gap-y-1 gap-x-3">
+                {% if request.user.profile_pic %}
+                    <img id="dashboard__userProfilePic" src="{{ request.user.profile_pic.url }}" class="bg-slate-200 w-[70px] min-w-[70px] max-w-[70px] h-[70px] rounded-full object-cover" alt="">
+                {% else %}
+                    <img id="dashboard__userProfilePic" src="{% static 'static_images/default_profile.png' %}" class="bg-slate-200 w-[70px] min-w-[70px] max-w-[70px] h-[70px] rounded-full object-cover" alt="">
+                {% endif %}
+                <p id="dashboard__leftUsername" class="font-semibold">{{ request.user.username }}</p>
+            </div>
+
+            <div class="flex flex-col gap-y-3 py-3 border-t border-gray-300">
+                <a href="{% url 'product:dashboard' %}" class="flex items-center justify-between hover:text-indigo-500 transition-colors duration-300 ease-in-out pb-3 border-b border-gray-300 last:border-0">
+                    <p>Dashboard</p>
+                    <span class="iconify text-lg text-indigo-500" data-icon="ant-design:dashboard-outlined"></span>
+                </a>
+                <a href="{% url 'product:dashboard-orders' %}" class="flex items-center justify-between hover:text-indigo-500 transition-colors duration-300 ease-in-out pb-3 border-b border-gray-300 last:border-0">
+                    <p>Orders</p>
+                    <span class="iconify text-lg text-indigo-500" data-icon="bx:cart"></span>
+                </a>
+                <a href="{% url 'product:dashboard-wishlist' %}" class="flex items-center justify-between hover:text-indigo-500 transition-colors duration-300 ease-in-out pb-3 border-b border-gray-300 last:border-0">
+                    <p>Wishlist</p>
+                    <span class="iconify text-lg text-indigo-500" data-icon="ant-design:heart-outlined"></span>
+                </a>
+                <a href="{% url 'authentication:logout' %}" class="flex items-center justify-between hover:text-indigo-500 transition-colors duration-300 ease-in-out pb-3 border-b border-gray-300 last:border-0">
+                    <p>Logout</p>
+                    <span class="iconify text-lg text-indigo-500" data-icon="material-symbols:logout"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="flex md:hidden mb-5">
+    <div id="dashboard__leftMenu" class="flex items-center items-center gap-x-1 cursor-pointer hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+        <span class="iconify text-lg" data-icon="clarity:filter-solid" data-flip="horizontal"></span>
+        Menu
+    </div>
+</div>
+
+<script src="{% static 'js/dashboard_left.js' %}"></script>

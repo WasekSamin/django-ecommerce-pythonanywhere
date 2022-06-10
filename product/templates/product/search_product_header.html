@@ -1,0 +1,18 @@
+<div class="px-5 md:px-10 lg:px-20 py-10 bg-slate-200">
+    <div class="flex flex-wrap gap-y-3 items-center justify-between">
+        <h5 class="font-semibold text-xl">Search For '{% if search_text is not None %}{{ search_text }}{% endif %}'</h5>
+        <div class="flex items-center gap-x-1 text-slate-600">
+            <a href="{% url 'product:home' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                <span class="iconify" data-icon="ant-design:home-filled"></span>
+            </a>
+            <span class="iconify" data-icon="ant-design:right-outlined"></span>
+            <a href="{% url 'product:shop' %}" class="hover:text-indigo-500 transition-colors duration-300 ease-in-out">
+                Shop
+            </a>
+            <span class="iconify" data-icon="ant-design:right-outlined"></span>
+            {% if search_text is not None %}
+                <p>{{ search_text }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

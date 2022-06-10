@@ -1,0 +1,79 @@
+<div>
+    <div class="flex flex-wrap items-center justify-center text-base gap-x-5 gap-y-3 font-medium">
+        <button id="product__detailDescriptionBtn" class="py-1">Description</button>
+        <button id="product__detailAdditionalInfoBtn" class="py-1 active__productDetailBtn">Additional Information</button>
+        <button id="product__detailReviewBtn" class="py-1 active__productDetailBtn">Reviews (<span>{{ number_of_reviews }}</span>)</button>
+    </div>
+
+    <div id="product__detailSpinner" class="flex justify-center mt-5 hidden">
+        <span class="iconify text-3xl text-slate-600" data-icon="icomoon-free:spinner9"></span>
+    </div>
+
+    <div>
+        <div id="product__detailDescription" class="hidden">
+            <h5 class="font-medium my-5 text-base">Description</h5>
+            {% if product.long_description %}
+                {{ product.long_description|safe }}
+            {% else %}
+                <p class="text-rose-500 font-semibold">No description yet!</p>
+            {% endif %}
+        </div>
+        <div id="product__detailAdditionalInfo" class="hidden">
+            <h5 class="font-medium my-5 text-base">Additional Information</h5>
+            {% if product.additional_information %}
+                <div class="flex flex-col">
+                    <div class="flex items-center justify-between py-1.5 px-3 border border-gray-300">
+                        <p class="font-semibold w-1/2 uppercase">Weights</p>
+                        <p class="w-1/2">{{ product.additional_information.weights_in_gram }} g</p>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-3 border border-t-0 border-gray-300">
+                        <p class="font-semibold w-1/2 uppercase">Dimension</p>
+                        <div class="flex flex-wrap w-1/2 gap-x-1">
+                            <p>{{ product.additional_information.width_in_cm }}</p>
+                            <p>x</p>
+                            <p>{{ product.additional_information.height_in_cm }}</p>
+                            <p>x</p>
+                            <p>{{ product.additional_information.depth_in_cm }}</p>
+                            <p>cm</p>
+                        </div>
+                    </div>
+                    {% if product_color_variation %}
+                        <div class="flex items-center justify-between py-1.5 px-3 border border-t-0 border-gray-300">
+                            <p class="font-semibold w-1/2 uppercase">Color</p>
+                            <div class="flex flex-wrap w-1/2 gap-x-1 product__additionalColor">
+                                {% for color in product_color_variation %}
+                                    <p>{{ color.color }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if product_size_variation %}
+                        <div class="flex items-center justify-between py-1.5 px-3 border border-t-0 border-gray-300">
+                            <p class="font-semibold w-1/2 uppercase">Size</p>
+                            <div class="flex flex-wrap w-1/2 gap-x-1 product__additionalSize">
+                                {% for size in product_size_variation %}
+                                    <p>{{ size.size }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="text-rose-500 font-semibold">No additional information yet!</p>
+            {% endif %}
+        </div>
+        <div id="product__detailReview">
+            <h5 class="font-medium my-5 text-base">Reviews</h5>
+
+            {% if request.user.is_authenticated %}
+                {% include "product/product_detail_review_form.html" %}
+            {% else %}
+                <div class="my-5 flex flex-col gap-y-3 items-center font-medium">
+                    <p class="text-rose-500">You need to login first to submit your review!</p>
+                    <a href="{% url 'authentication:login' %}" class="underline hover:text-indigo-500 transition-colors duration-300 ease-in-out">Sign In</a>
+                </div>
+            {% endif %}
+            {% include "product/product_detail_reviews.html" %}
+        </div>
+    </div>
+</div>

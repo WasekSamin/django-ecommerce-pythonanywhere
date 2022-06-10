@@ -1,0 +1,24 @@
+@media (max-width: 767px) {
+    #dashboard__left {
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    #dashboard__left.show__dashboardLeft {
+        z-index: 20;
+        opacity: 1;
+    }
+}
+
+@media (max-width: 500px) {
+    #dashboard__left > div {
+        width: 60%;
+    }
+}
+
+@media (max-width: 405px) {
+    #dashboard__left > div {
+        width: 70%;
+    }
+}

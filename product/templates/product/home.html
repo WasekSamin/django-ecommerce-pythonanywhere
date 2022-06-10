@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<div>
+    {% include "product/home_banner.html" %}
+</div>
+
+<div class="px-5 md:px-10 lg:px-20">
+    <div>
+        {% include "product/all_categories.html" %}
+    </div>
+
+    <div>
+        {% include "product/home_products.html" %}
+    </div>
+
+    <div>
+        {% include "product/home_services.html" %}
+    </div>
+
+    {% if blogs %}
+        <div>
+            {% include "product/home_blogs.html" %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

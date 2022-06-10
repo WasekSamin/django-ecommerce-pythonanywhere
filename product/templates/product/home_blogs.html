@@ -1,0 +1,38 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/home_blogs.css' %}">
+
+<div class="mb-16">
+    <div class="flex flex-col items-center gap-y-3">
+        <h5 class="font-medium text-xl">Latest <span class="text-indigo-500 font-semibold">News</span></h5>
+        {% include "product/header_border.html" %}
+    </div>
+
+    <div class="mt-16">
+        <div class="flex justify-end mb-4 mr-3">
+            <a href="{% url 'product:blog' %}" class="text-indigo-500 hover:underline">
+                See All
+            </a>
+        </div>
+
+        <div id="home__blogs">
+            {% for blog in blogs %}
+                <div class="flex flex-col gap-y-3 w-[300px]">
+                    <div class="h-[200px] w-full overflow-hidden bg-slate-600 home__blogImgDiv">
+                        <a href="{% url 'product:blog-detail' blog.slug %}" class="w-full h-full">
+                            <img data-src="{{ blog.image }}" class="w-full h-full object-cover hover:scale-125 transition-all duration-300 ease-in-out" alt="">
+                        </a>
+                    </div>
+    
+                    <div class="flex flex-col items-center gap-y-2 mt-2">
+                        <a href="{% url 'product:blog-detail' blog.slug %}" class="font-semibold capitalize hover:text-indigo-500 transition-colors duration-300 ease-in-out">{{ blog.title }}</a>
+                        <p class="text-xs">By {{ blog.creator }} at {{ blog.created_at }}</p>
+                        <a href="{% url 'product:category-wise-blog' blog.category.slug %}" class="font-semibold hover:text-indigo-500 transition-colors duration-300 ease-in-out">{{ blog.category.title }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/home_blogs.js' %}"></script>

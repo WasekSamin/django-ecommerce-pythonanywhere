@@ -1,0 +1,19 @@
+<div>
+    <div class="w-full h-[300px] sm:h-[350px] relative">
+        <img id="product__mainImg" src="{{ product.image.url }}" xoriginal="{{ product.image.url }}" class="w-full h-full object-contain" alt="">
+    </div>
+    <div id="product__detailGallery" class="mt-3 relative">
+        <div onclick="changeProductDetailMainImg(this)" class="w-[80px] h-[80px] cursor-pointer">
+            <img data-src="{{ product.image.url }}" class="w-full h-full object-cover bg-slate-600 product__detailThumbnailImg" alt="">
+        </div>
+        {% if product.variation %}
+            {% for variation in product.variation.all %}
+                {% if variation.image %}
+                    <div onclick="changeProductDetailMainImg(this)" class="w-[80px] h-[80px] cursor-pointer">
+                        <img data-src="{{ variation.image.url }}" class="w-full h-full object-cover bg-slate-600 product__detailThumbnailImg" alt="">
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

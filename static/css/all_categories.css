@@ -1,0 +1,9 @@
+#nav__catContent .slick-slide {
+    margin-right: 15px;
+}
+
+@media (max-width: 359px) {
+    #nav__catContent .slick-slide {
+        margin-right: 0;
+    }
+}

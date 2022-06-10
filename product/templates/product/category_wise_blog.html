@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/blogs.css' %}">
+
+{% include "product/category_wise_blog_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div id="blogs__grid" class="grid">
+        {% include "product/blog_left.html" %}
+        {% include "product/blog_right.html" %}
+    </div>
+</div>
+
+{% endblock %}

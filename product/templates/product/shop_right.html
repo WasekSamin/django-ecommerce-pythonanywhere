@@ -1,0 +1,21 @@
+{% load static %}
+
+<div>
+    <div class="flex flex-col gap-y-3">
+        <div class="flex items-center justify-between gap-x-5 pb-3 border-b border-gray-300">
+            <select class="px-3 py-1 focus:outline-none border border-gray-300 rounded" id="shop__productSort">
+                <option value="default" {% if sort_way is None or sort_way == "default" %}selected{% endif %}>Default</option>
+                <option value="price_low" {% if sort_way == "price_low" %}selected{% endif %}>Price (Low to Max)</option>
+                <option value="price_high" {% if sort_way == "price_high" %}selected{% endif %}>Price (Max to Low)</option>
+            </select>
+            <div class="flex items-center flex-1 rounded border border-gray-300 bg-white shop__rightProductSearch">
+                <input type="text" class="w-full rounded-l px-3 py-[0.3rem] focus:outline-none" placeholder="Search Product...">
+                <button type="submit" class="cursor-pointer pr-1 rounded-r">
+                    <span class="iconify bg-white text-lg" data-icon="carbon:search"></span>
+                </button>
+            </div>
+        </div>
+
+        {% include "product/shop_right_product.html" %}
+    </div>
+</div>

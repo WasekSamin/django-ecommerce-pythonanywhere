@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "product/track_order_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div class="flex flex-col gap-y-7">
+        <div class="flex flex-col gap-y-3 border border-gray-300 p-5 shadow-lg rounded-lg">
+            <p class="leading-6">Order ID <span class="bg-yellow-400 text-black">{{ order_obj.uid }}</span> was placed on <span class="bg-yellow-400 text-black">{{ order_created_at }}</span> and is currently <span class="bg-yellow-400 text-black">{{ order_obj.order_status.title }}</span>.</p>
+
+            <h5 class="uppercase font-semibold text-base mt-2">Order Update</h5>
+
+            <p>{{ order_created_at }}</p>
+            <p>Payment Status: <span class="font-semibold">
+                {% if order.is_paid %}
+                    PAID
+                {% else %}
+                    UNPAID
+                {% endif %}
+            </span></p>
+        </div>
+
+        <div class="flex flex-col gap-y-3">
+            <h5 class="uppercase font-semibold text-base">Order Details</h5>
+
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left">
+                    <thead class="uppercase bg-slate-200 font-semibold">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 min-w-[10rem] w-[10rem] max-w-[10rem]">
+                                Product
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order_obj.cart.cart_items.all %}
+                            <tr class="bg-white border-b border-gray-300 last:border-0">
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    {{ item.product.title }} x {{ item.quantity }}
+                                </td>
+                                <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                    ${{ item.price|floatformat:2 }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="bg-slate-200">
+                        <tr>
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Subtotal
+                            </td>
+                            <td class="px-6 py-3 font-semibold text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                ${{ order_obj.price|floatformat:2 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Shipping Charge
+                            </td>
+                            <td class="px-6 py-3 font-semibold text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                ${{ order_obj.shipping_product_type.shipping_charge|floatformat:2 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Payment Method
+                            </td>
+                            <td class="px-6 py-3 capitalize min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                {{ order_obj.payment_method }}
+                            </td>
+                        </tr>
+                        <tr class="border-t border-gray-300">
+                            <td class="px-6 py-3 font-semibold uppercase">
+                                Total
+                            </td>
+                            <td class="px-6 py-3 font-semibold text-indigo-500 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                ${{ order_obj.total_price|floatformat:2 }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

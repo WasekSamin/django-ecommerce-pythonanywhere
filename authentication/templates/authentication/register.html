@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+
+<div class="px-5 md:px-10 lg:px-20 flex flex-col items-center gap-y-7 justify-center w-full my-10">
+    {% include "authentication/auth_header.html" %}
+    
+    <form id="register__form" method="POST" action="{% url 'authentication:create-account' %}" class="flex flex-col gap-y-3 py-5 px-10 w-full sm:w-[70%] md:w-1/2 lg:w-[40%] border border-gray-300 rounded-lg shadow-lg">
+        {% csrf_token %}
+        <p id="error__msg" class="text-center text-center mb-2 text-rose-600 font-semibold hidden"></p>
+        
+        <div class="flex flex-col gap-y-3">
+            <label for="username">*Username</label>
+            <input autofocus id="username" autofocus type="text" class="px-3 py-2 focus:outline-none rounded border border-gray-300 focus:ring-2 focus:ring-gray-300" required>
+        </div>
+        <div class="flex flex-col gap-y-3">
+            <label for="email">*Email</label>
+            <input id="email" type="email" class="px-3 py-2 focus:outline-none rounded border border-gray-300 focus:ring-2 focus:ring-gray-300" required>
+        </div>
+        <div class="flex flex-col gap-y-3">
+            <label for="password">*Password</label>
+            <input id="password" type="password" class="px-3 py-2 focus:outline-none rounded border border-gray-300 focus:ring-2 focus:ring-gray-300" required>
+        </div>
+        <div class="flex flex-col gap-y-3">
+            <label for="conf__password">*Confirm Password</label>
+            <input id="conf__password" type="password" class="px-3 py-2 focus:outline-none rounded border border-gray-300 focus:ring-2 focus:ring-gray-300" required>
+        </div>
+        <div>
+            <button id="auth__submitBtn" type="submit" class="flex items-center gap-x-1.5 flex-wrap gap-y-1.5 px-10 py-2 cursor-pointer bg-indigo-500 text-white hover:bg-indigo-700 hover:shadow rounded uppercase transition-all duration-300 ease-in-out">
+                Sign Up
+                <div id="auth__spinner" class="hidden">
+                    <span class="iconify text-lg" data-icon="icomoon-free:spinner9"></span>
+                </div>
+            </button>
+        </div>
+
+        <p class="text-slate-500 text-xs mt-1 text-center">
+            Already have an account! <a href="{% url 'authentication:login' %}" class="underline hover:text-indigo-500 transition-colors duration-300 ease-in-out">Sign in</a> here
+        </p>
+    </form>
+</div>
+
+<script src="{% static 'js/register.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+.title__border > div {
+    width: 4px;
+    height: 4px;
+    background-color: var(--indigo-500);
+    border-radius: 50%;
+}
+
+.title__border > div:last-child {
+    width: 50px;
+    border-radius: 9999px;
+}

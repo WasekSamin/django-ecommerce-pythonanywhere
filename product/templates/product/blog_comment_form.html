@@ -1,0 +1,26 @@
+<div class="mt-5 flex flex-col gap-y-5">
+    <h5 class="text-sm sm:text-base font-semibold">Share your review with us</h5>
+
+    {% if request.user.is_authenticated %}
+        <form method="POST" id="blog__detailCommentForm">
+            {% csrf_token %}
+            <div class="flex flex-col gap-y-1">
+                <label for="blog__commentField">*Your Comment</label>
+                <textarea id="blog__commentField" rows="3" class="mt-2 focus:outline-none border border-gray-300 focus:ring-2 focus:ring-gray-300 px-3 py-2 rounded"></textarea>
+                <p id="blog__commentErrorMsg" class="hidden text-rose-500 medium">Comment field is required!</p>
+    
+                <div class="mt-2">
+                    <button id="blog__commentSubmitBtn" type="submit" class="bg-indigo-500 hover:bg-indigo-700 hover:shadow text-white px-5 rounded py-2 flex items-center gap-x-1 transition-all duration-300 ease-in-out">
+                        <span class="iconify text-lg" data-icon="cil:paper-plane"></span>
+                        POST
+                    </button>
+                </div>
+            </div>
+        </form>
+    {% else %}
+    <div class="my-5 flex flex-col gap-y-3 items-center font-medium">
+        <p class="text-rose-500">You need to login first to submit your review!</p>
+        <a href="{% url 'authentication:login' %}" class="underline hover:text-indigo-500 transition-colors duration-300 ease-in-out">Sign In</a>
+    </div>
+    {% endif %}
+</div>

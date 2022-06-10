@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    {% if cart_obj is not None %}
+        <div id="cart__mainDiv">
+            {% if cart_obj.cart_items.count > 0 %}
+                <div id="cart__tableDiv" class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left">
+                        <thead class="uppercase bg-slate-200 font-semibold">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Product
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Price
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Quantity
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Subtotal
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_obj.cart_items.all %}
+                                <tr id="cart-item-{{ item.uid }}" class="bg-white border-b border-gray-300 last:border-0">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-x-3">
+                                            <div>
+                                                <button onclick="cartItemRemove(this)" id="cart-item-remove-{{ item.uid }}" class="text-slate-500 hover:text-rose-500 transition-colors duration-300 ease-in-out">
+                                                    <span class="iconify text-lg" data-icon="carbon:close-outline"></span>
+                                                </button>
+                                            </div>
+                                            <a href="{% url 'product:product-detail' item.product.slug %}">
+                                                <img data-src="{% if item.product.image %}{{ item.product.image.url }}{% endif %}" class="min-w-[50px] w-[50px] max-w-[50px] h-[80px] object-cover bg-slate-600 cart__productImg" alt="">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                        <a href="{% url 'product:product-detail' item.product.slug %}" class="hover:text-indigo-500 font-medium transition-colors duration-300 ease-in-out">
+                                            {{ item.product.title }}
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-4 text-indigo-500">
+                                        {% if item.quantity > 0 %}
+                                            {% with price=item.price qty=item.quantity %}
+                                                ${{ price|div:qty|floatformat:2 }}
+                                            {% endwith %}
+                                        {% else %}
+                                            $0.00
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <button onclick="cartProductQtyIncrease(this)" id="cart-item-qty-increase-{{ item.uid }}" class="px-2.5 py-1 border border-gray-300 font-semibold">+</button>
+                                            <input id="cart-item-qty-{{ item.uid }}" class="px-2.5 py-1 w-[4rem] text-center font-medium border border-gray-300 focus:outline-none" min="0" value="{{ item.quantity }}" readonly />
+                                            <button onclick="cartProductQtyDecrease(this)" id="cart-item-qty-decrease-{{ item.uid }}" class="px-2.5 py-1 border border-gray-300 font-semibold">-</button>
+                                        </div>
+                                    </td>
+                                    <td id="cart-item-subtotal-{{ item.uid }}" class="px-6 py-4 font-medium text-indigo-500">
+                                        ${{ item.price|floatformat:2 }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="flex flex-col p-3 gap-y-1">
+                        <form id="cart__promocodeForm" method="POST" class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                            <input id="cart__promocode" type="text" class="px-3 py-1.5 border border-gray-300 focus:ring-2 focus:ring-gray-300 rounded focus:outline-none" placeholder="Coupon Code">
+                            <div>
+                                <button type="submit" class="px-5 py-1.5 uppercase rounded bg-indigo-500 text-white hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">
+                                    Apply Coupon
+                                </button>
+                            </div>
+                        </form>
+                        <p id="promo__errorMsg" class="hidden text-rose-500 font-medium"></p>
+                    </div>
+                </div>
+            {% else %}
+                <p class="mt-10 mb-60 text-center text-rose-500 font-semibold">Your cart is empty!</p>
+            {% endif %}
+        </div>
+    
+        <div class="flex justify-end mt-10 mb-20">
+            <div class="w-full sm:w-[60%] md:w-1/2 relative overflow-x-auto shadow-md rounded-lg rounded-b-none">
+                <table class="w-full text-sm text-left">
+                    <thead class="uppercase bg-slate-200 font-semibold">
+                        <tr>
+                            <th colspan="2" scope="col" class="px-6 py-3 text-center">
+                                Cart
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b border-gray-300 last:border-0">
+                            <td class="px-6 py-3 font-semibold">
+                                Subtotal
+                            </td>
+                            <td id="cart__subtotalPrice" class="px-6 py-3 text-indigo-500">
+                                ${{ cart_obj.total_price|floatformat:2 }}
+                                {% if promo_discount is not None %}
+                                    <span id="promo__discount" class="text-slate-500 font-medium">({{ promo_discount }}% OFF)</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr class="bg-white border-b border-gray-300 last:border-0">
+                            <td class="px-6 py-3 font-semibold">
+                                Shipping Charge
+                            </td>
+                            <td id="cart__shippingCharge" class="px-6 py-3 text-indigo-500">
+                                ${{ shipping_charge|floatformat:2 }}
+                            </td>
+                        </tr>
+                        <tr class="bg-white border-b border-gray-300 last:border-0">
+                            <td class="px-6 py-3 font-semibold">
+                                Total
+                            </td>
+                            <td id="cart__totalPrice" class="px-6 py-3 text-indigo-500">
+                                ${{ cart_total_price|floatformat:2 }}
+                            </td>
+                        </tr>
+                        <tr class="bg-white border-b border-gray-300 last:border-0">
+                            <td colspan="2" class="bg-indigo-500 hover:bg-indigo-700 text-white transition-colors duration-300 ease-in-out">
+                                <a href="{% url 'product:checkout' %}" class="flex px-6 py-3 items-center gap-x-1 justify-center font-medium">
+                                    Proceed To Checkout
+                                    <span class="iconify" data-icon="bi:arrow-right"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% elif cart_obj is None or cart_obj.cart_items.count == 0 %}
+        <p class="mt-10 mb-60 text-center text-rose-500 font-semibold">Your cart is empty!</p>
+    {% elif cart_obj is None and not request.user.is_authenticated %}
+        <div class="mt-20 mb-28 flex flex-col gap-y-3 items-center font-medium">
+            <p class="text-rose-500">You need to login first to see your cart!</p>
+            <a href="{% url 'authentication:login' %}" class="mb-32 underline hover:text-indigo-500 transition-colors duration-300 ease-in-out">Sign In</a>
+            </div>
+    {% endif %}
+</div>
+
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

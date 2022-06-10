@@ -1,0 +1,78 @@
+#product__detailGrid {
+  grid-template-columns: 40% 60%;
+}
+
+#product__detailGallery .product__detailGallaerySlideBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.product__detailGalleryPrevBtn {
+  left: 0;
+}
+
+.product__detailGalleryNextBtn {
+  right: 0;
+}
+
+#product__detailGallery .slick-slide {
+  margin-right: 10px;
+}
+
+.product__additionalColor > p,
+.product__additionalSize > p {
+  position: relative;
+}
+
+.product__additionalColor > p::after,
+.product__additionalSize > p::after {
+  content: ", ";
+}
+
+.product__additionalColor > p:last-child::after,
+.product__additionalSize > p:last-child::after {
+  content: "";
+}
+
+#product__detailSpinner {
+  animation: product_detail_spinner 1s linear infinite;
+}
+
+#product__mainImg {
+  width: 100% !important;
+}
+
+.fa, .fas {
+  font-family: "Font Awesome 5 Brands" !important;
+}
+
+@keyframes product_detail_spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.jssocials-share-link {
+  border-radius: 50% !important;
+}
+
+@media (max-width: 699px) {
+  #product__detailGrid {
+    grid-template-columns: 100%;
+  }
+
+  .product__detailRight {
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+
+  .prev__nextProductBtn {
+    display: none;
+  }
+}

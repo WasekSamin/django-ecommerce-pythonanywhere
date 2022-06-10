@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .header__title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .username {
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+    </style>
+
+    <h1 class="header__title">Welcome To Django Ecommerce Site</h1>
+    <h3 class="username">Hello {{ username }}</h3>
+    <p>
+        Click on this <a href="{{ activation_link }}">{{ activation_link }}</a> link to activate your account.
+    </p>
+    <p>Thank you! Have a great day.</p>
+</body>
+</html>

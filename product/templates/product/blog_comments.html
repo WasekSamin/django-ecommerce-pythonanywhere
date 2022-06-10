@@ -1,0 +1,23 @@
+{% load static %}
+
+<div class="flex flex-col gap-y-5 my-10 pt-5 border-t border-gray-300">
+    <h5 id="blog__detailTotalCommentHeader" class="font-semibold text-base">Total Comments (<span>{{ blog_reviews|length }}</span>)</h5>
+    <div id="blog__reviewMainDiv" class="flex flex-col gap-y-5">
+        {% if blog_reviews %}
+            {% for review in blog_reviews %}
+                <div class="flex items-start gap-x-1.5 blog__reviewDiv">
+                    <img data-src="{% if review.user.profile_pic is not None %}{{ review.user.profile_pic }}{% else %}{% static 'static_images/default_profile.png' %}{% endif %}" class="min-w-[30px] w-[30px] max-w-[30px] h-[30px] bg-slate-200 rounded-full object-cover product__detailUserImg" alt="">
+                    <div class="flex flex-col gap-y-1">
+                        <p class="font-semibold">{{ review.user.username }}</p>
+                        <p class="text-slate-600">{{ review.comment }}</p>
+                        <p class="text-slate-600 text-xs">{{ review.created_at }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div id="blog__detailNoReviewDiv" class="text-rose-500 font-semibold">No Review yet!</div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static 'js/blog_comments.js' %}"></script>

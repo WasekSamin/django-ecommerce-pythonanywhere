@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="flex flex-col gap-y-3">
+            <h5 class="font-semibold text-base uppercase pb-3 border-b boder-gray-300">Billing Details</h5>
+
+            {% if cart_obj is not None and cart_obj.cart_items.count > 0 %}
+                <p id="checkout__errorMsg" class="hidden text-rose-500 font-medium text-center mb-3"></p>
+                <div class="flex items-center flex-wrap justify-between gap-3">
+                    <div class="flex-1 flex flex-col gap-y-2">
+                        <label for="first__name">*First Name</label>
+                        <input autofocus="true" id="first__name" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-y-2">
+                        <label for="last__name">*Last Name</label>
+                        <input id="last__name" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required">
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col gap-y-2">
+                    <label for="phone__no">*Phone No</label>
+                    <input id="phone__no" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required">
+                </div>
+                <div class="flex-1 flex flex-col gap-y-2">
+                    <label for="street__address">*Street Address</label>
+                    <input id="street__address" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required" placeholder="House number & Street name">
+                    <input id="apartment" type="text" class="mt-1 px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none" placeholder="Apartment, Suite, Unit etc. (optional)">
+                </div>
+                <div class="flex-1 flex flex-col gap-y-2">
+                    <label for="city">*Town/City</label>
+                    <input id="city" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required">
+                </div>
+                <div class="flex-1 flex flex-col gap-y-2">
+                    <label for="country">*Country</label>
+                    <select name="country" id="country" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required">
+                        <option value="">Select Country</option>
+                        {% for country in countries %}
+                            <option value="{{ country.title }}">{{ country.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex-1 flex flex-col gap-y-2">
+                    <label for="zip">*Postcode/Zip</label>
+                    <input id="zip" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none required">
+                </div>
+    
+                <div class="flex flex-col mt-5 gap-y-3">
+                    <button id="shipping__addressBtn" class="flex items-center justify-between pb-3 border-b border-gray-300 cursor-pointer">
+                        <h5 class="font-semibold uppercase">Ship to a different address?</h5>
+                        <span id="shipping__addressIcon" class="iconify text-lg" data-icon="akar-icons:chevron-down"></span>
+                    </button>
+                    <div id="shipping__addressForm" class="flex-1 flex flex-col gap-y-2 hidden">
+                        <label for="shipping__address">Shipping Address</label>
+                        <textarea rows="3" id="shipping__address" type="text" class="px-3 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+            {% else %}
+                <div class="flex flex-col items-center gap-y-3">
+                    {% if request.user.is_authenticated %}
+                        <p class="text-rose-500 font-semibold">Your cart is empty!</p>
+                        <a href="{% url 'product:shop' %}" class="flex items-center gap-x-1 underline text-indigo-500 font-medium">
+                            <span class="iconify text-lg" data-icon="ep:back"></span>
+                            Continue Shopping</a>
+                    {% else %}
+                        <p class="text-rose-500 font-semibold">You are currently no logged in!</p>
+                        <a href="{% url 'authentication:login' %}" class="flex items-center gap-x-1 underline text-indigo-500 font-medium">
+                            Sign In</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="flex flex-col gap-y-3 ml-0 mt-10 md:ml-7 md:mt-0">
+            <h5 class="font-semibold text-base uppercase pb-3 border-b boder-gray-300">Your Order</h5>
+            <div>
+                <div class="relative overflow-x-auto shadow-md rounded-lg">
+                    <table class="w-full text-sm text-left">
+                        <thead class="uppercase bg-slate-200 font-semibold">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Product
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Subtotal
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cart_obj is not None and cart_obj.cart_items.count > 0 %}
+                                {% for item in cart_obj.cart_items.all %}
+                                    <tr class="bg-white border-b border-gray-300 last:border-0">
+                                        <td class="px-6 py-3 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                            <span class="font-medium text-dark">{{ item.product.title }}</span> <span class="text-slate-500 font-medium">x {{ item.quantity }}</span>
+                                        </td>
+                                        <td class="px-6 py-3 text-indigo-500">
+                                            ${{ item.price }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr class="bg-white border-b border-gray-300 last:border-0">
+                                    <td colspan="2" class="text-rose-500 font-medium px-6 py-3 min-w-[15rem] w-[15rem] max-w-[15rem]">
+                                        No Product found in your cart!
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                        <tbody>
+                            <tr class="bg-slate-200">
+                                <td class="px-6 py-3 font-semibold">
+                                    Subtotal
+                                </td>
+                                <td class="px-6 py-3 text-indigo-500 font-semibold">
+                                    {% if cart_obj is not None %}
+                                        ${{ cart_obj.total_price|floatformat:2 }}
+                                    {% else %}
+                                        $0.00
+                                    {% endif %}
+                                    {% if cart_obj is not None and cart_obj.promo_code is not None %}
+                                        <span class="font-medium text-slate-500">({{ cart_obj.promo_code.discount_percentage }}% OFF)</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr class="bg-slate-200">
+                                <td class="px-6 py-3 font-semibold">
+                                    Shipping Charge
+                                </td>
+                                <td class="px-6 py-3 text-indigo-500 font-semibold">
+                                    ${{ shipping_charge|floatformat:2 }}
+                                </td>
+                            </tr>
+                            <tr class="bg-slate-200">
+                                <td class="px-6 py-3 font-semibold">
+                                    Total
+                                </td>
+                                <td class="px-6 py-3 text-indigo-500 font-semibold">
+                                    ${{ cart_total_price|floatformat:2 }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if cart_obj is not None and cart_obj.cart_items.count > 0 %}
+                    <div class="relative overflow-x-auto shadow-md rounded-lg mt-10 mb-5">
+                        <table class="w-full text-sm text-left">
+                            <tbody class="bg-slate-200">
+                                <tr>
+                                    <td colspan="2" class="px-6 py-3">
+                                        <div class="flex items-center">
+                                            <input id="cash__onDelivery" checked="true" name="payment_process" type="radio" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                                            <label for="cash__onDelivery" class="ml-2 text-sm font-medium text-slate-900 font-semibold">Cash On Delivery</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="hidden">
+                                    <td class="px-6 py-3">
+                                        <div class="flex items-center">
+                                            <input id="stripe__payment" type="radio" name="payment_process" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                                            <label for="stripe__payment" class="ml-2 text-sm font-medium text-slate-900 font-semibold">Stripe</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-3 text-indigo-500 flex justify-end">
+                                        <span class="iconify text-2xl" data-icon="fa6-brands:cc-stripe"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+
+                {% if cart_obj is not None and cart_obj.cart_items.count > 0 %}
+                    <div class="flex">
+                        <button id="checkout__confirmOrderBtn" class="rounded flex-1 px-5 py-2.5 bg-indigo-500 text-white hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">Confirm Order</button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/checkout.js' %}"></script>
+{% endblock %}

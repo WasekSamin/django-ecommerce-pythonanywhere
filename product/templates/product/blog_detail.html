@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/blog_detail.css' %}">
+
+{% include "product/blog_detail_header.html" %}
+
+<div class="px-5 md:px-10 lg:px-20 my-10">
+    <div id="blog__detailGrid" class="grid">
+        <div id="blog__left">
+            <div class="flex flex-col gap-y-3 pr-5 border-r border-gray-300 blog__leftContent">
+                <img id="blog__detailMainImg" src="{{ blog_obj.image }}" alt="">
+
+                <p class="font-semibold capitalize text-base sm:text-xl">{{ blog_obj.title }}</p>
+                <p class="text-slate-500">{{ blog_obj.created_at }} By {{ blog_obj.creator }}</p>
+                <div class="flex items-center gap-x-1 text-xs">
+                    <span class="iconify text-base" data-icon="fa:comment-o"></span>
+                    <p id="blog__detailTotalComments">{{ number_of_reviews }}</p>
+                    <p>Comments</p>
+                </div>
+
+                <a href="{% url 'product:category-wise-blog' blog_obj.category.slug %}" class="text-indigo-500">
+                    <p>{{ blog_obj.category.title }}</p>
+                </a>
+
+                <div class="blog__detailDesc">
+                    {{ blog_obj.content|safe }}
+                </div>
+            </div>
+            
+            {% include "product/blog_detail_share.html" %}
+
+            {% if prev_blog_obj is not None or next_blog_obj is not None %}
+                <div class="flex flex-wrap gap-y-2 items-center {% if prev_blog_obj is not None %}justify-between{% else %}justify-end{% endif %} pb-3 border-b border-gray-300">
+                    {% if prev_blog_obj is not None %}
+                        <a href="{% url 'product:blog-detail' prev_blog_obj.slug %}" class="flex items-center gap-x-1 px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">
+                            <span class="iconify" data-icon="akar-icons:chevron-left"></span>
+                            Previous
+                        </a>
+                    {% endif %}
+                    {% if next_blog_obj is not None %}
+                        <a href="{% url 'product:blog-detail' next_blog_obj.slug %}" class="flex items-center justify-end gap-x-1 px-3 py-1.5 bg-indigo-500 text-white rounded hover:bg-indigo-700 hover:shadow transition-all duration-300 ease-in-out">
+                            Next
+                            <span class="iconify" data-icon="akar-icons:chevron-right"></span>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% include "product/blog_comment_form.html" %}
+            {% include "product/blog_comments.html" %}
+
+        </div>
+
+        {% include "product/blog_right.html" %}
+        {% include "product/blog_search.html" %}
+    </div>
+</div>
+
+<script src="{% static 'js/blog_detail.js' %}"></script>
+{% endblock %}

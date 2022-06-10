@@ -1,0 +1,27 @@
+/* Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    /* Fonts */
+    --poppins: 'Poppins', sans-serif;
+    /* Colors */
+    --indigo-400: rgb(129 140 248);
+    --indigo-500: rgb(99 102 241);
+    --slate-800: rgb(30 41 59);
+}
+
+body {
+    font-family: var(--poppins);
+}
+
+.product__detailHeaderTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}

@@ -1,0 +1,9 @@
+#dashboard__grid {
+    grid-template-columns: 30% 70%;
+}
+
+@media (max-width: 767px) {
+    #dashboard__grid {
+        grid-template-columns: 100%;
+    }
+}

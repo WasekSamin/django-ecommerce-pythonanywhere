@@ -1,0 +1,34 @@
+@media (max-width: 1115px) {
+    .dashboard__wishlist {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 991px) {
+    .dashboard__wishlist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .dashboard__wishlist {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard__wishlist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 359px) {
+    .dashboard__wishlist {
+        display: grid;
+        grid-template-columns: 100%;
+    }
+}

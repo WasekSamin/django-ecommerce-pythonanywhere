@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    {% comment %}Jquery{% endcomment %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    {% comment %}Tailwind{% endcomment %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% comment %}Iconify{% endcomment %}
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    {% comment %}Slick js{% endcomment %}
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    {% comment %}Toast{% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/toast.style.min.css' %}">
+    <script src="{% static 'js/toast.script.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body class="bg-slate-100 text-slate-700">
+    <div class="max-w-screen-2xl mx-auto text-sm">
+        {% include "navbar.html" %}
+        {% include "product_search.html" %}
+        {% block content %}{% endblock %}
+        {% include "cart_sidebar.html" %}
+        {% include "product_modal.html" %}
+        {% include "footer.html" %}
+    </div>
+
+    <script src="{% static 'js/base.js' %}"></script>
+</body>
+</html>
