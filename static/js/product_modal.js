@@ -359,6 +359,11 @@ productModalAddToCartBtn.addEventListener("click", async() => {
 
   const CSRFTOKEN = getCookie("csrftoken");
 
+  if (CSRFTOKEN === null) {
+    window.location.href = "/authentication/login/";
+    return;
+  }
+
   await fetch("/add-to-cart/", {
     method: "POST",
     headers: {
@@ -483,6 +488,11 @@ async function productModalAddToWishlist() {
   if (productModalId !== null) {
     const CSRFTOKEN = getCookie("csrftoken");
 
+    if (CSRFTOKEN === null) {
+      window.location.href = "/authentication/login/";
+      return;
+    }
+
     let formData = new FormData();
     formData.append("uid", productModalId);
 
@@ -557,6 +567,11 @@ async function productModalAddToWishlist() {
 async function productModalRemoveFromWishlist() {
   if (productModalId) {
     const CSRFTOKEN = getCookie("csrftoken");
+
+    if (CSRFTOKEN === null) {
+      window.location.href = "/authentication/login/";
+      return;
+    }
 
     let formData = new FormData();
     formData.append("uid", productModalId);

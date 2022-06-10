@@ -37,6 +37,12 @@ const wishlistRemove = async(e) => {
         productId = productId.split("wishlist-product-remove-")[1];
 
         const CSRFTOKEN = getCookie("csrftoken");
+
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("uid", productId);
         

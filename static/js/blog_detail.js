@@ -28,6 +28,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function submitComment(comment) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let currentBlog = window.location.href.split("/");
         currentBlog = currentBlog[currentBlog.length - 2]
 

@@ -39,6 +39,11 @@ const removeFromDashboardWishlist = (e) => {
 async function removeProductFromDashboardWishlist(uid) {
     const CSRFTOKEN = getCookie("csrftoken");
 
+    if (CSRFTOKEN === null) {
+      window.location.href = "/authentication/login/";
+      return;
+    }
+
   let formData = new FormData();
 
   formData.append("uid", uid);

@@ -202,6 +202,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 productDetailReviewSubmitBtn.disabled = true;
     
                 const CSRFTOKEN = getCookie("csrftoken");
+
+                if (CSRFTOKEN === null) {
+                    window.location.href = "/authentication/login/";
+                    return;
+                }
     
                 let formData = new FormData();
                 formData.append("productId", productDetailId);

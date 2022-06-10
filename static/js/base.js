@@ -37,6 +37,11 @@ const removeFromWishlist = (e) => {
 async function addProductToWishlist(uid) {
   const CSRFTOKEN = getCookie("csrftoken");
 
+  if (CSRFTOKEN === null) {
+    window.location.href = "/authentication/login/";
+    return;
+  }
+
   let formData = new FormData();
 
   formData.append("uid", uid);
@@ -100,6 +105,11 @@ async function addProductToWishlist(uid) {
 
 async function removeProductFromWishlist(uid) {
   const CSRFTOKEN = getCookie("csrftoken");
+
+  if (CSRFTOKEN === null) {
+    window.location.href = "/authentication/login/";
+    return;
+  }
 
   let formData = new FormData();
 

@@ -59,6 +59,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function loginAccount(info) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("email", info.email);
         formData.append("password", info.password);

@@ -90,6 +90,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function submitCheckoutForm(firstName, lastName, phoneNo, address, city, apartment, country, zipCode, shippingAddr) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("firstName", firstName);
         formData.append("lastName", lastName);

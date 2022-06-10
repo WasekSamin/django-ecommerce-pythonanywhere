@@ -80,6 +80,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function createAccount(info) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("username", info.username);
         formData.append("email", info.email);

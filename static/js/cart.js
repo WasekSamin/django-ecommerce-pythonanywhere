@@ -54,6 +54,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function submitPromocode(promocode) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("promocode", promocode);
 
@@ -149,6 +154,11 @@ function updateCart(cartItemId, productQty, action) {
 async function updateCartItem(cartItemId, productQty) {
     const CSRFTOKEN = getCookie("csrftoken");
 
+    if (CSRFTOKEN === null) {
+        window.location.href = "/authentication/login/";
+        return;
+    }
+
     let formData = new FormData();
     formData.append("cartItemId", cartItemId);
     formData.append("qty", productQty);
@@ -188,6 +198,11 @@ async function updateCartItem(cartItemId, productQty) {
 // Remove product from the cart
 async function removeCartItem(cartItemId) {
     const CSRFTOKEN = getCookie("csrftoken");
+
+    if (CSRFTOKEN === null) {
+        window.location.href = "/authentication/login/";
+        return;
+    }
 
     let formData = new FormData();
     formData.append("uid", cartItemId);

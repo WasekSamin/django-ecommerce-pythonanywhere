@@ -69,6 +69,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function blogAutoSearchSubmitForm(searchText) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("searchText", searchText);
 

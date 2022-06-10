@@ -97,6 +97,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function updateAccountInfo(username, phoneNo, address, file) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("username", username);
         formData.append("phoneNo", phoneNo);

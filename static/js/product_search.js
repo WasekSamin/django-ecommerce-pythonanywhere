@@ -57,6 +57,11 @@ window.addEventListener("DOMContentLoaded", () => {
     async function productAutoSearchSubmitForm(searchText) {
         const CSRFTOKEN = getCookie("csrftoken");
 
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let formData = new FormData();
         formData.append("searchText", searchText);
 
@@ -85,7 +90,7 @@ window.addEventListener("DOMContentLoaded", () => {
                             <img src=${product.image && product.image} class="w-[70px] h-[70px] object-cover bg-slate-600" alt="">
                             <div class="flex flex-col gap-y-1">
                                 <p class="font-medium search__resultTitle">${product.title}</p>
-                                <p class="font-semibold text-base text-indigo-500">${product.price}</p>
+                                <p class="font-semibold text-base text-indigo-500">\$${product.price}</p>
                             </div>
                         `
 

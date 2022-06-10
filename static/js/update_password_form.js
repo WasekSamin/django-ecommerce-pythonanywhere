@@ -64,6 +64,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     async function updatePassword(newPassword) {
         const CSRFTOKEN = getCookie("csrftoken");
+
+        if (CSRFTOKEN === null) {
+            window.location.href = "/authentication/login/";
+            return;
+        }
+
         let currentPath = window.location.pathname.split("/");
         currentPath = currentPath[currentPath.length - 2];
         
