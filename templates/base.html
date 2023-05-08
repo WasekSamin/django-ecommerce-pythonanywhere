@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Samin Ecommerce</title>
 
     {% comment %}Jquery{% endcomment %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body class="bg-slate-100 text-slate-700">
-    <div class="max-w-screen-2xl mx-auto text-sm">
+    <div class="text-sm">
         {% include "navbar.html" %}
         {% include "product_search.html" %}
         {% block content %}{% endblock %}

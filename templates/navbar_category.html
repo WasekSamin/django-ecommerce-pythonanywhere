@@ -1,20 +1,22 @@
-<div class="bg-white shadow-lg py-5 px-5 md:px-10 lg:px-20 border-t border-gray-300 overflow-x-hidden overflow-y-auto">
-    <div id="nav__catDiv" class="flex flex-wrap gap-x-10 gap-y-5 w-full h-0 transition-all duration-300 ease-in-out">
-        {% if categories %}
-            {% for category in categories %}
-                <div class="flex flex-col gap-y-3 last:pb-5">
-                    <div>
-                        <a href="{% url 'product:category-wise-product' category.slug %}" class="font-semibold hover:text-indigo-500 transition-colors duration-300 ease-in-out">{{ category.title }}</a>
+<div class="bg-white w-full border-t border-gray-300">
+    <div class=" shadow-lg w-full max-w-screen-2xl mx-auto py-5 px-5 md:px-10 lg:px-20 overflow-x-hidden overflow-y-auto">
+        <div id="nav__catDiv" class="flex flex-wrap gap-x-10 gap-y-5 w-full h-0 transition-all duration-300 ease-in-out">
+            {% if categories %}
+                {% for category in categories %}
+                    <div class="flex flex-col gap-y-3 last:pb-5">
+                        <div>
+                            <a href="{% url 'product:category-wise-product' category.slug %}" class="font-semibold hover:text-indigo-500 transition-colors duration-300 ease-in-out">{{ category.title }}</a>
+                        </div>
+                        {% if category.subcategory.all.count > 0 %}
+                            {% for subcategory in category.subcategory.all %}
+                                <div class="text-slate-500 flex flex-col gap-y-1.5">
+                                    <a href="{% url 'product:subcategory-wise-product' subcategory.slug %}" class="hover:text-indigo-600 transition-colors duration-300 ease-in-out">{{ subcategory.title }}</a>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    {% if category.subcategory.all.count > 0 %}
-                        {% for subcategory in category.subcategory.all %}
-                            <div class="text-slate-500 flex flex-col gap-y-1.5">
-                                <a href="{% url 'product:subcategory-wise-product' subcategory.slug %}" class="hover:text-indigo-600 transition-colors duration-300 ease-in-out">{{ subcategory.title }}</a>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            {% endfor %}
-        {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 </div>
